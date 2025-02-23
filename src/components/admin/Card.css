@@ -69,3 +69,6 @@
   transform: scale(1.2);
   color: black; /* Change the icon color on hover */
 }
+.profile_Cards:hover {
+  transform: translateY(-5px);
+}

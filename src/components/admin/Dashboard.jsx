@@ -22,7 +22,7 @@ const counters = [
     { counterName: 'counter6', mobileNumber: '9876543215', email: 'counter6@gmail.com', vendorName: 'vendor6', createdAt: new Date(), counterImage: 'https://i.ytimg.com/vi/95VS8bfdi_M/maxresdefault.jpg' },
     { counterName: 'counter7', mobileNumber: '9876543216', email: 'counter7@gmail.com', vendorName: 'vendor7', createdAt: new Date(), counterImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4LXm432XjlaiaWMHBJNoRh7lJxe2HtMjzqQ&s' },
     { counterName: 'counter8', mobileNumber: '9876543217', email: 'counter8@gmail.com', vendorName: 'vendor8', createdAt: new Date(), counterImage: 'https://res.cloudinary.com/purnesh/image/upload/w_540,f_auto,q_auto:eco,c_limit/11708001666338.jpg' },
-    { counterName: 'counter9', mobileNumber: '9876543218', email: 'counter9@gmail.com', vendorName: 'vendor9', createdAt: new Date(), counterImage: 'https://i.ytimg.com/vi/uXf3xXeu1x4/maxresdefault.jpg' },
+    // { counterName: 'counter9', mobileNumber: '9876543218', email: 'counter9@gmail.com', vendorName: 'vendor9', createdAt: new Date(), counterImage: 'https://i.ytimg.com/vi/uXf3xXeu1x4/maxresdefault.jpg' },
 ]
 
 
@@ -67,7 +67,7 @@ const Cards = () => {
                 <div className='row row-gap-4'>
                     {counters.map((counter, index) => (
                         <div className='col-3'>
-                            <div className='card rounded ' >
+                            <div className='card rounded profile_Cards' >
                                 <div className='text-end' style={{ height: '200px', width: '100%', backgroundImage: `url(${counter.counterImage})`, backgroundRepeat: 'no-repeat', backgroundPosition: 'center', backgroundSize: '100% 100%', borderRadius: '5px 5px 0 0' }} >
                                     <div class="btn  dropdown-toggle" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
                                         <SettingsIcon style={{ width: '20px', color: 'white', }} />

@@ -78,8 +78,8 @@ function Availability() {
         counter6: true,
         counter7: true,
         counter8: true,
-        counter9: true,
-        counter10: true,
+        // counter9: true,
+        // counter10: true,
     });
 
     const handleChange = (event) => {
