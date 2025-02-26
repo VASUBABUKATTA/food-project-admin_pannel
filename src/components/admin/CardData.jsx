@@ -12,7 +12,7 @@ const Cards = () => {
   return (
     <div className="cards-container">
       {/* Counters Card */}
-      <Link to="/nestead/sidenav" style={{ textDecoration: "none" }}>
+      <Link to="/" style={{ textDecoration: "none" }}>
         <div className="card1">
           <div className="card-header1">
             <h3>COUNTERS <span className='text-white m-1'><Restaurant /></span> </h3>
@@ -25,7 +25,7 @@ const Cards = () => {
         </div>
       </Link>
       {/* All Orders */}
-      <Link to="/nestead/sidenav/" style={{ textDecoration: "none" }}>
+      <Link to="/" style={{ textDecoration: "none" }}>
         <div className="card1">
           <div className="card-header1">
             <h3>COUNTER PROFILES<span className='text-white m-1'><StoreIcon /></span> </h3>
@@ -38,7 +38,7 @@ const Cards = () => {
         </div>
       </Link>
       {/* Counters Availability */}
-      <Link to="/nestead/sidenav/" style={{ textDecoration: "none" }}>
+      <Link to="/" style={{ textDecoration: "none" }}>
         <div className="card1">
           <div className="card-header1">
             <h3>COUNTER AVAILABILITY <span className='text-white '><RestaurantMenu /></span> </h3>
@@ -52,7 +52,7 @@ const Cards = () => {
       </Link>
 
       {/* Menu Items */}
-      <Link to="/nestead/sidenav/" style={{ textDecoration: "none" }}>
+      <Link to="/" style={{ textDecoration: "none" }}>
         <div className="card1">
           <div className="card-header1 d-flex text-center align-items-center justify-content-center">
             <h3>SETTINGS<span className='m-1 '><Settings /></span></h3>

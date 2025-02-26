@@ -66,7 +66,7 @@ const Cards = () => {
             <div className='container mx-2 '>
                 <div className='row row-gap-4'>
                     {counters.map((counter, index) => (
-                        <div className='col-3'>
+                        <div className='col-xl-3 col-md-4 col-sm-6 '>
                             <div className='card rounded profile_Cards' >
                                 <div className='text-end' style={{ height: '200px', width: '100%', backgroundImage: `url(${counter.counterImage})`, backgroundRepeat: 'no-repeat', backgroundPosition: 'center', backgroundSize: '100% 100%', borderRadius: '5px 5px 0 0' }} >
                                     <div class="btn  dropdown-toggle" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
@@ -77,7 +77,7 @@ const Cards = () => {
                                         <li><button class="dropdown-item" type="button">Delete</button></li>
                                     </ul>
                                 </div>
-                                <div className='card-body counter_card' onClick={() => handleCardClick(counter)}  >
+                                <div className='card-body counter_card profile_Cards1' onClick={() => handleCardClick(counter)}  >
                                     <h5 className='card-title text-center'>{counter.counterName}</h5>
                                     <h6 className='' style={{ fontWeight: "bold" }} >Vendor Name:  <span className='text-primary'>{counter.vendorName} </span></h6>
                                     <h6 className='' style={{ fontWeight: "bold" }}>vendor Mobile: <span className='text-primary'> {counter.mobileNumber}</span></h6>
@@ -135,6 +135,7 @@ const UpdateCounter = ({ open }) => {
             <Modal
                 show={show}
                 // onHide={handleClose}
+                style={{marginTop:'35px'}}
                 backdrop="static"
                 keyboard={false}
             >
@@ -204,7 +205,7 @@ const UpdateCounter = ({ open }) => {
                                 )} */}
                                 <div className="d-flex align-items-center gap-2 mt-3">
                                     <Button
-                                        variant="contained" component="label"
+                                         component="label"
                                         sx={{ width: "40%", height: "40px" }}
                                     >
                                         Upload Image
@@ -263,7 +264,36 @@ function Dashboard() {
 
 
     };
+  const [show, setShow] = useState(false);
 
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+    const [formData, setFormData] = useState({
+      ownerName: "",
+      mobileNo: "",
+      email: "",
+      counterName: "",
+      imagePath: null,
+    });
+  
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+  
+    const handleImageChange = (e) => {
+      const file = e.target.files[0];
+      setFormData((prev) => ({ ...prev, imagePath: file }));
+    };
+  
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      console.log("Form Data:", formData);
+      alert("Form submitted successfully!");
+      setShow(!show);
+    };
+  
     // if (counter) {
     //     return <UpdateCounter />
     // }
@@ -272,17 +302,102 @@ function Dashboard() {
         setTab("cards");
         navigate(`/admin/cards`);
     };
-
+    const addCounter = () => {
+        setShow(true)
+      }
     return (
         <>
             <div className=''>
-                <Typography variant='h5'className='ms-3 mb-4 text-primary' fontWeight="bold">List of Counters Profiles :</Typography>
-                                 
+                
+                     <div className="row mt-3" style={{ backgroundClip: "aliceblue" }}>
+                             <div className="col-6">
+                             <Typography variant='h5'className='ms-3 mb-4 text-primary' fontWeight="bold">List of Counters Profiles :</Typography>
+                             </div>
+                             <div className="col-6 text-end">
+                               <Button
+                                 variant="contained"
+                                 sx={{ width: { xs: "50%", md: "25%" }, height: "50px", mr: 3 }}
+                                 onClick={addCounter}
+                               >
+                                 Add Counter
+                               </Button>
+                             </div>
+                           </div>            
                 <div  >
                     {(tab === 'cards') && (< Cards onMenuItemClick={handleMenuItemClick}  />)}
                 </div>
             </div>
-         
+           {/* Modal for Adding Counter */}
+      <Modal show={show} onHide={handleClose} style={{marginTop:'35px'}} backdrop="static" keyboard={false}>
+        {/* <Modal.Header closeButton>
+                    <Modal.Title className="text-center">ADD COUNTER</Modal.Title>
+                </Modal.Header> */}
+        <Modal.Body>
+          <Typography variant="body2" sx={{ mt: 1, textAlign: 'center', fontWeight: "bold", fontSize: '20px' }}>
+            ADD COUNTER
+          </Typography>
+          <form onSubmit={handleSubmit}>
+            <TextField
+              fullWidth label="Owner Name" name="ownerName"
+              value={formData.ownerName} onChange={handleChange}
+              margin="normal" required
+              // style={{border:'2px light black'}}
+              variant='outlined'
+            />
+            <TextField
+              fullWidth label="Mobile Number" name="mobileNo" type="tel"
+              value={formData.mobileNo} onChange={handleChange}
+              margin="normal" required
+            />
+            <TextField
+              fullWidth label="Email" name="email" type="email"
+              value={formData.email} onChange={handleChange}
+              margin="normal" required
+            />
+            <TextField
+              fullWidth label="Counter Name" name="counterName"
+              value={formData.counterName} onChange={handleChange}
+              margin="normal" required
+            />
+
+            {/* Upload Image */}
+            <div className="d-flex align-items-center gap-2 mt-3">
+              <Button
+                 component="label"
+                sx={{ width: "40%", height: "40px" }}
+              >
+                Upload Image
+                <input type="file" hidden required onChange={handleImageChange} />
+              </Button>
+              {formData.imagePath && (
+                <Typography variant="body2">
+                  Selected: {formData.imagePath.name}
+                </Typography>
+              )}
+            </div>
+
+            {/* Submit Button */}
+            {/* <div className="text-center mt-4">
+                            <Button 
+                                type="submit" variant="contained" color="primary" 
+                                sx={{ width: "50%" }}
+                            >
+                                Submit
+                            </Button>
+                        </div> */}
+            <div className='row container justify-content-between align-items-center'>
+              <div className='col-6'>
+                <Button variant="contained" color="white" sx={{ mt: 3 }} onClick={handleClose}>
+                  Cancel
+                </Button></div>
+              <div className='col-6'>
+                <Button type='submit' variant="contained" color="primary" sx={{ mt: 3 }}>
+                  Submit
+                </Button></div>
+            </div>
+          </form>
+        </Modal.Body>
+      </Modal>
         </>
 
 

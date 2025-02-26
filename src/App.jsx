@@ -12,6 +12,8 @@ import MenuItems from './components/admin/Menu Items'
 import SideNav from './components/admin/SideNav'
 import Availability from './components/admin/Availability'
 import GlobalSideNav1 from './components/admin/SideNav'
+import AppProviderBasic from './components/admin/A'
+import AdminLoginCredentials from './components/admin/AdminLoginPage'
 // import Availability from './components/admin/CountersAvailability'
 
 function App() {
@@ -19,11 +21,13 @@ function App() {
     <div>
       <Routes>
         <Route path='/' element={<HomePage />} />
-        {/* <Route path='/a' element={<SideNav />} /> */}
-       
+        <Route path='/logout' element={<HomePage />} />
+        <Route path='/admin/Login' element={<AdminLoginCredentials />} />
+        {/* <Route path='/a' element={<AppProviderBasic />} /> */}
+        <Route path='/nestead/sidenav' element={<B />} />
 
-         <Route path="/nestead/sidenav" element={<SideNav />}>
-          <Route index element={<sideNav />} />
+         <Route path="/nestead/sidenav" element={<B />}>
+          <Route index element={<B />} />
           <Route path="counters/all/Profiles" element={<Dashboard />} />
           <Route path="counters/Availability" element={<Availability/>} />
          

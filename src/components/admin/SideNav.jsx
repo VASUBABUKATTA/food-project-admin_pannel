@@ -551,7 +551,7 @@ const Categorys = ({ categoryName }) => {
 function SideNav() {
 
 
-    const [showCounters, setshowCounters] = useState(true)
+    const [showCounters, setshowCounters] = useState(false)
 
     const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -577,6 +577,11 @@ const [showColor2,setShowColor2]=useState(true);
 const [showColor3,setShowColor3]=useState(true);
 
 
+useEffect(()=>{
+    console.log(window.location.pathname);
+    const currentPath = window.location.pathname
+    if(currentPath == '/nestead/sidenav'){setshowCounters(true)}
+})
 
     return (
         <>
@@ -586,11 +591,13 @@ const [showColor3,setShowColor3]=useState(true);
                 {/* Sidebar Section */}
                 <div className='col-2 sidenav' style={{ position: "relative" }}>
 
-                    <div className=' mt-5'>
+                    <div className=' mt-1'>
                         {/* <div className=' mx-3' style={{,textDecoration:"none",color:"red",fontWeight:"bold",fontSize:"20px"}} ><Link onClick={() => { setshowCounters(true) }}><Restaurant /></Link></div> */}
                          <div className='text-white mx-3 btn '><Link to="" style={{textDecoration:"none",color:"white",fontWeight:"bold",fontSize:"20px",}}  onClick={() => { setshowCounters(true);setShowColor(true);setShowColor1(false),setShowColor2(false),setShowColor3(false) }}>
-                       Couters List <Restaurant />
+                         <Restaurant /> Couters List 
                         </Link></div>
+
+                        
 
                         <> {showCounters ? (
                             <div style={{ height: "300px", overflow: "" }}>
@@ -660,7 +667,7 @@ const [showColor3,setShowColor3]=useState(true);
                                                                     fontWeight: "bold",
                                                                     color: selectedIndex === index ? "white" : "primary",
                                                                     textAlign: "center",
-                                                                    // backgroundColor: selectedIndex === index ? "blue" : "",
+                                                                    // backgroundColor: selectedIndex === index ? "" : "",
                                                                     // border:"2px solid black"
                                                                 }
                                                             }}
@@ -673,11 +680,11 @@ const [showColor3,setShowColor3]=useState(true);
                                 </Box>
                             </div>) : (<></>)}</>
 
-                        <div className='mb-2 mt-3 mx-1 text-white btn'><Link to="/nestead/sidenav/counters/all/Profiles" style={{textDecoration:"none",color:"white",fontWeight:"bold",fontSize:"20px"}}  onClick={() => { setshowCounters(false);setShowColor(false);setShowColor1(true),setShowColor2(false),setShowColor3(false) }}>Counter Profiles<StoreTwoTone /></Link></div>
+                        <div className='mb-2 mt-3 mx-1 text-white btn'><Link to="/nestead/sidenav/counters/all/Profiles" style={{textDecoration:"none",color:"white",fontWeight:"bold",fontSize:"20px"}}  onClick={() => { setshowCounters(false);setShowColor(false);setShowColor1(true),setShowColor2(false),setShowColor3(false) }}><StoreTwoTone /> Counter Profiles</Link></div>
                        
-                        <div className=' mb-2 mx-3 text-white btn '><Link to="/nestead/sidenav/counters/Availability" style={{textDecoration:"none",color:"white",fontWeight:"bold",fontSize:"20px"}}  onClick={() => { setshowCounters(false) }}>Counters Avial<RestaurantMenu /></Link></div>
+                        <div className=' mb-2 mx-3 text-white btn '><Link to="/nestead/sidenav/counters/Availability" style={{textDecoration:"none",color:"white",fontWeight:"bold",fontSize:"20px"}}  onClick={() => { setshowCounters(false) }}><RestaurantMenu /> Counters Avial</Link></div>
 
-                        <div className='mx-3 text-white fw-bold btn'><Link to="/nestead/sidenav/settingsPannel" style={{textDecoration:"none",color:"white",fontWeight:"bold",fontSize:"20px"}} onClick={() => { setshowCounters(false) }} >Settings <Settings /></Link></div>
+                        <div className='mx-3 text-white fw-bold btn'><Link to="/nestead/sidenav/settingsPannel" style={{textDecoration:"none",color:"white",fontWeight:"bold",fontSize:"20px"}} onClick={() => { setshowCounters(false) }}  ><Settings /> Settings </Link></div>
                     </div>
 
                 </div>

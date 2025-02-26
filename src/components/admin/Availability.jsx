@@ -145,7 +145,7 @@ function Availability() {
 
 
     return (
-        <div>
+        <div className='w-100 h-100'>
             {/* <Card
                 sx={{
                     p: 3,
@@ -177,7 +177,7 @@ function Availability() {
             </Card> */}
             <>
                 
-                <TableContainer style={{width:"100%",height:"600px"}}>
+                <TableContainer style={{width:"100%"}}>
                     <Typography variant='h5'className='ms-5 mt-2 text-primary' fontWeight="bold">Counters Availability :</Typography>
                     <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', padding: '40px 40px 40px 40px', borderRadius: '20px' }}>
                         <Table sx={{ maxWidth: 1000, borderRadius: '20px' }} aria-label="customized table">

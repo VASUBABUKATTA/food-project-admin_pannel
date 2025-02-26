@@ -15,6 +15,7 @@
     "@mui/icons-material": "^6.4.5",
     "@mui/material": "^6.4.5",
     "@mui/styled-engine-sc": "^6.4.3",
+    "@toolpad/core": "^0.12.0",
     "boostrap": "^2.0.0",
     "bootstrap": "^5.3.3",
     "react": "^19.0.0",
@@ -34,6 +35,7 @@
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.18",
     "globals": "^15.14.0",
+    "typescript": "^5.7.3",
     "vite": "^6.1.0"
   }
 }

@@ -70,5 +70,10 @@
   color: black; /* Change the icon color on hover */
 }
 .profile_Cards:hover {
+  transition: all 0.3s ease-in-out;
   transform: translateY(-5px);
+}
+
+.profile_Cards1:hover {
+ cursor: pointer;
 }
