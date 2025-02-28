@@ -12,7 +12,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import CounterRegistrationApis from '../Api_Services/CounterRegistrationApis';
 
-import { ArrowBackIosTwoTone } from '@mui/icons-material';
+import { Accessibility, AccountCircle, ArrowBackIosTwoTone, CalendarMonth, CurrencyRupee, Email, LocalMall, Phone, Storefront, Tapas } from '@mui/icons-material';
 
 function Dashboard() {
     const [tab, setTab] = useState("cards");
@@ -23,7 +23,7 @@ function Dashboard() {
     const [counters, setCounters] = useState([]);  // Corrected state name
 
     const [showProfile, setShowProfile] = useState(false);
-    const [counterDetails,setCounterDetails]=useState('')
+    const [counterDetails, setCounterDetails] = useState('')
 
     const handleShow = () => setShow(true);
 
@@ -143,16 +143,16 @@ function Dashboard() {
     const deleteCounter = async (counter) => {
         const deleteId = counter.ID;
         const isConfirmed = window.confirm("Are you sure you want to delete this counter?");
-        if(isConfirmed){
-        try {
-            const response = await CounterRegistrationApis.registerCounterDelete(deleteId);
-            // console.log("delete APi response :", response)
-            alert("Record deleted Successfully")
-            fetchData();
-        } catch (error) {
-            // console.log(error.response.data.message);
+        if (isConfirmed) {
+            try {
+                const response = await CounterRegistrationApis.registerCounterDelete(deleteId);
+                // console.log("delete APi response :", response)
+                alert("Record deleted Successfully")
+                fetchData();
+            } catch (error) {
+                // console.log(error.response.data.message);
+            }
         }
-    }
     }
 
     useEffect(() => {
@@ -410,32 +410,32 @@ function Dashboard() {
     return (
         <>
             <div>
-                
+
 
                 {tab === 'cards' && (
-                    
+
                     <div className='container mx-2'>
                         <div className="row mt-3">
-                    <div className="col-6">
-                        <Typography variant='h5' className='ms-3 mb-4 text-primary' fontWeight="bold">
-                            List of Counters Profiles :
-                        </Typography>
-                    </div>
-                    <div className="col-6 text-end">
-                        <Button
-                            variant="contained"
-                            sx={{ width: { xs: "50%", md: "25%" }, height: "50px", mr: 3 }}
-                            onClick={() => setShow(true)}
-                        >
-                            Add Counter
-                        </Button>
-                    </div>
-                </div>
+                            <div className="col-6">
+                                <Typography variant='h5' className='ms-3 mb-4 text-primary' fontWeight="bold">
+                                    List of Counters Profiles :
+                                </Typography>
+                            </div>
+                            <div className="col-6 text-end">
+                                <Button
+                                    variant="contained"
+                                    sx={{ width: { xs: "50%", md: "25%" }, height: "50px", mr: 3 }}
+                                    onClick={() => setShow(true)}
+                                >
+                                    Add Counter
+                                </Button>
+                            </div>
+                        </div>
                         <div className='row row-gap-4'>
                             {counters.map((counter, index) => (
                                 <div key={index} className='col-xl-3 col-md-4 col-sm-6'>
-                                    <div className='card rounded ' 
-                                    style={counter.AVAILABLE == 0 ? { filter: "blur(0px)", pointerEvents: "",opacity:"0.1", transition: "0.3s ease-in-out",border:'3px solid black' } : {}} >
+                                    <div className='card rounded '
+                                        style={counter.AVAILABLE == 0 ? { filter: "blur(0px)", pointerEvents: "", opacity: "0.1", transition: "0.3s ease-in-out", border: '3px solid black' } : {}} >
                                         <div
                                             className='text-end'
                                             style={{
@@ -703,61 +703,222 @@ function Dashboard() {
                 </>) : (<></>)}
 
                 {showProfile ? (<> <>
-                    <div className='row mb-2 ms-3'>
+                    <div className='mb-2 ms-3'>
                         <div className='col-6 mt-3 d-flex ms-5'> <Link className='ms-5' style={{ textDecoration: "none" }}> <ArrowBackIosTwoTone
                             onClick={handleBack}
-                            style={{ fontSize: 30, color: "dark", cursor: "pointer", fontWeight: "bold" }}
-                        /></Link><Typography variant='h5' className='text-center fw-bold fs-4 ms-2' color='midnightblue'>Counter Profile Information :</Typography></div>
+                            style={{ fontSize: 30, color:'black', cursor: "pointer", fontWeight: "bold" }}
+                        /></Link>
+                            <Typography variant="h5" className="text-center fw-bold fs-4 ">Counter Profile Information</Typography>
+                        </div>
 
 
                     </div>
-                    <div className='bg-seondary ms-3 mb-2'>
-                        <div className=''>
-                            <div className='row'>
+                 
 
-                                <div className="col-6 d-flex justify-content-center align-items-center">
-                                    <div className="d-inline-block">
-                                        <Typography variant="h5" className='fw-bold fs-4' sx={{ mb: 2 }}>
-                                            Counter Name: <span style={{ fontWeight: "normal", color: "darkblue" }}>{counterDetails.COUNTERNAME}</span>
-                                        </Typography>
-                                        <Typography variant="h5" className='fw-bold fs-4' sx={{ mb: 2 }}>
-                                            Mobile Number: <span style={{ fontWeight: "normal", color: "royalblue" }}>{counterDetails.MOBILENO}</span>
-                                        </Typography>
-                                        <Typography variant="h5" className='fw-bold fs-4'>
-                                            From: <span style={{ fontWeight: "normal", color: "blue" }}>{counterDetails.CREATED_AT}</span>
-                                        </Typography>
+                    <div className="border card rounded m-4 h-75">
+
+                        {/* Card Body - Centered Image */}
+                        <div className="card-body border p-3 d-flex flex-column align-items-center justify-content-center shadow-sm" style={{backgroundColor:'aliceblue'}}>
+                            <div
+                                className="rounded-circle"
+                                style={{
+                                    height: '200px',
+                                    width: '200px',
+                                    backgroundImage: counterDetails.IMAGEPATH ? `url(http://localhost:9090${counterDetails.IMAGEPATH})` : 'none',
+                                    backgroundSize: 'cover',
+                                    backgroundPosition: 'center',
+                                    border: '2px solid #ccc',
+
+                                }}
+                            ></div>
+                        </div>
+
+                        {/* Counter Profile Information */}
+
+
+                        {/* Footer with Row and Column Layout */}
+                        <div className="card-footer border p-3">
+                            <div className="row">
+                                <div className="col-12 col-md-6">
+                                    <div className="p-1">
+
+                                        <div className="form-group d-flex text-center align-items-center justify-content-center gap-2 mt-1">
+                                            <AccountCircle />
+                                            <input
+                                                type="text"
+                                                value={counterDetails.OWNERNAME}
+                                                name="OWNERNAME"
+                                                disabled
+                                                style={{
+                                                    width: '100%',
+                                                    border: '1px solid rgb(229, 231, 235)',
+                                                    padding: '0.75rem',
+                                                    borderRadius: '8px',
+                                                    fontSize: '1rem',
+                                                    transition: 'border-color 0.2s'
+                                                }}
+                                            />
+                                        </div>
                                     </div>
                                 </div>
-                                <div className='col-6'>
-                                    <img src={`http://localhost:9090${counterDetails.IMAGEPATH}`} alt="Smiley face" width={500} height={300} className='rounded-circle' />
-                                </div>
+                                <div className="col-12 col-md-6">
+                                    <div className="p-1">
 
+                                        <div className="form-group d-flex text-center align-items-center justify-content-center gap-2 mt-1">
+                                            <Storefront />
+                                            <input
+                                                type="text"
+                                                value={counterDetails.COUNTERNAME}
+                                                name="OWNERNAME"
+                                                disabled
+                                                style={{
+                                                    width: '100%',
+                                                    border: '1px solid rgb(229, 231, 235)',
+                                                    padding: '0.75rem',
+                                                    borderRadius: '8px',
+                                                    fontSize: '1rem',
+                                                    transition: 'border-color 0.2s'
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-12 col-md-6">
+                                    <div className="p-1">
+
+                                        <div className="form-group d-flex text-center align-items-center justify-content-center gap-2 mt-1">
+                                            <Email />
+                                            <input
+                                                type="text"
+                                                value={counterDetails.EMAIL}
+                                                name="OWNERNAME"
+                                                disabled
+                                                style={{
+                                                    width: '100%',
+                                                    border: '1px solid rgb(229, 231, 235)',
+                                                    padding: '0.75rem',
+                                                    borderRadius: '8px',
+                                                    fontSize: '1rem',
+                                                    transition: 'border-color 0.2s'
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-12 col-md-6">
+                                    <div className="p-1">
+
+                                        <div className="form-group d-flex text-center align-items-center justify-content-center gap-2 mt-1">
+                                        <Phone />
+                                            <input
+                                                type="text"
+                                                value={counterDetails.MOBILENO}
+                                                name="OWNERNAME"
+                                                disabled
+                                                style={{
+                                                    width: '100%',
+                                                    border: '1px solid rgb(229, 231, 235)',
+                                                    padding: '0.75rem',
+                                                    borderRadius: '8px',
+                                                    fontSize: '1rem',
+                                                    transition: 'border-color 0.2s'
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-12 col-md-6">
+                                    <div className="p-1">
+
+                                        <div className="form-group d-flex text-center align-items-center justify-content-center gap-2 mt-1">
+                                        <CalendarMonth />
+                                            <input
+                                                type="text"
+                                                value={counterDetails.CREATED_AT}
+                                                name="OWNERNAME"
+                                                disabled
+                                                style={{
+                                                    width: '100%',
+                                                    border: '1px solid rgb(229, 231, 235)',
+                                                    padding: '0.75rem',
+                                                    borderRadius: '8px',
+                                                    fontSize: '1rem',
+                                                    transition: 'border-color 0.2s'
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-12 col-md-6">
+                                    <div className="p-1">
+
+                                        <div className="form-group d-flex text-center align-items-center justify-content-center gap-2 mt-1">
+                                        <Accessibility />
+                                            <input
+                                                type="text"
+                                                value={counterDetails.AVAILABLE == 1 ? "Opened":"Closed"}
+                                                name="OWNERNAME"
+                                                disabled
+                                                style={{
+                                                    width: '100%',
+                                                    border: '1px solid rgb(229, 231, 235)',
+                                                    padding: '0.75rem',
+                                                    borderRadius: '8px',
+                                                    fontSize: '1rem',
+                                                    transition: 'border-color 0.2s'
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-12 col-md-6">
+                                    <div className="p-1">
+
+                                        <div className="form-group d-flex text-center align-items-center justify-content-center gap-2 mt-1">
+                                        <LocalMall />
+                                            <input
+                                                type="text"
+                                                value={"10"}
+                                                name="OWNERNAME"
+                                                disabled
+                                                style={{
+                                                    width: '100%',
+                                                    border: '1px solid rgb(229, 231, 235)',
+                                                    padding: '0.75rem',
+                                                    borderRadius: '8px',
+                                                    fontSize: '1rem',
+                                                    transition: 'border-color 0.2s'
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-12 col-md-6">
+                                    <div className="p-1">
+
+                                        <div className="form-group d-flex text-center align-items-center justify-content-center gap-2 mt-1">
+                                        <CurrencyRupee />
+                                            <input
+                                                type="text"
+                                                value={"1000"}
+                                                name="OWNERNAME"
+                                                disabled
+                                                style={{
+                                                    width: '100%',
+                                                    border: '1px solid rgb(229, 231, 235)',
+                                                    padding: '0.75rem',
+                                                    borderRadius: '8px',
+                                                    fontSize: '1rem',
+                                                    transition: 'border-color 0.2s'
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div className='row my-3'>
-                                <div className="col-6 d-flex justify-content-center align-items-center  " >
-                                    <div className='d-inline-block p-4 rounded text-white fw-bold fs-4' style={{ backgroundColor: "midnightblue" }}>
-                                        <Typography variant="h5" sx={{ mb: 4 }}>
-                                            Vendor Name: <span style={{ fontWeight: "normal" }}>{counterDetails.OWNERNAME}</span>
-                                        </Typography>
-                                        <Typography variant="h5">
-                                            Email: <span style={{ fontWeight: "normal" }}>{counterDetails.EMAIL}</span>
-                                        </Typography>
-                                    </div>
-                                </div>
-                                <div className="col-6 mt-2 d-flex justify-content-center align-items-center " >
-                                    <div className='d-inline-block p-3 ms-4 rounded text-white fw-bold fs-4' style={{ backgroundColor: "darkblue" }}>
-                                        <Typography variant="h5" sx={{ mb: 5 }}>
-                                            Total Orders: <span style={{ fontWeight: "normal" }}>852</span>
-                                        </Typography>
-                                        <Typography variant="h5">
-                                            Total Amout: <span style={{ fontWeight: "normal" }}>9874560</span>
-                                        </Typography>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div >
+                        </div>
                     </div>
+
 
                 </>
                 </>) : (<></>)}
