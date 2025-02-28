@@ -1,13 +1,8 @@
 import React, { useState } from 'react'
-import AddCounter from './AddCounter';
-import { Button } from '@mui/material';
+
 
 function Header() {
-  const [showAddCounter, SetShowAddCounter] = useState(false);
-  
-    const addCounter = () => {
-      SetShowAddCounter(true)
-    }
+ 
   return (
     <div>
        <div className='text-light w-100 sticky-top' style={{ height: '60px', backgroundColor: 'midnightblue' }}>

@@ -1,7 +1,4 @@
 import React from 'react'
-import Header from './Header'
-import Footer from './Footer'
-import SideNav1 from './SideNav1'
 
 function MenuItems() {
   return (

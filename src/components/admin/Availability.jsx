@@ -1,222 +1,182 @@
-// import React, { useState } from 'react'
-// import { Card, Typography, Button, Switch, FormControlLabel } from '@mui/material';
 
-// function Availability() {
-//     const [status, setStatus] = useState(true);  // true = Open, false = Closed
-
-//     const handleStatusChange = (event) => {
-//         setStatus(event.target.checked);
-//     };
-//     return (
-//         <div> <Card
-//             sx={{
-//                 p: 3,
-//                 maxWidth: 400,
-//                 margin: 'auto',opacity: status ? 1 : 0.5,  // Reduce opacity when status is closed (muted effect)
-//                 transition: 'filter 0.1s ease-in-out'  // Smooth transition for blur effect
-//             }}
-//         >
-//             <Typography variant="h5">Counter Name: Counter 3</Typography>
-//             <Typography variant="h6" sx={{ mb: 2 }}>
-//                 Mobile Number: 9876543210
-//             </Typography>
-
-//             <FormControlLabel
-//                 control={
-//                     <Switch
-//                         checked={status}
-//                         onChange={handleStatusChange}
-//                         name="status"
-//                         color="primary"
-//                     />
-//                 }
-//                 label={status ? 'Open' : 'Closed'}
-//             />
-
-//             <Button variant="contained" sx={{ mt: 2 }} onClick={() => alert("Status saved!")}>
-//                 Save Status
-//             </Button>
-//         </Card></div>
-//     )
-// }
-
-// export default Availability
-import React, { use, useState } from 'react'
-import { Card, Typography, Button, Switch, FormControlLabel } from '@mui/material';
+import React, { use, useEffect, useState } from 'react'
+import { Card, Typography, Button, Switch, FormControlLabel, Container,Badge , TextField } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import Table from '@mui/material/Table';
-import Box from '@mui/material/Box';
-import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import Header from './Header';
-import Footer from './Footer';
+
+import CounterRegistrationApis from '../Api_Services/CounterRegistrationApis';
+import DataTable from 'react-data-table-component'
 
 
-const counters = [
-    { counterName: 'counter1', mobileNumber: '9876543210', email: 'counter1@gmail.com', vendorName: 'vendor1', createdAt: new Date(), counterImage: 'https://media.istockphoto.com/id/509172658/photo/composition-with-cup-of-starbucks-coffee-and-beans.jpg?s=612x612&w=0&k=20&c=3FqaIJzw2820mKX_OUSLiey4ZtTsGWlT0JYk3qRAJDU=' },
-    { counterName: 'counter2', mobileNumber: '9876543211', email: 'counter2@gmail.com', vendorName: 'vendor2', createdAt: new Date(), counterImage: 'https://images.deliveryhero.io/image/fd-th/LH/v9nq-hero.jpg?width=480&height=360&quality=45' },
-    { counterName: 'counter3', mobileNumber: '9876543212', email: 'counter3@gmail.com', vendorName: 'vendor3', createdAt: new Date(), counterImage: 'https://teatimegroup.com/wp-content/uploads/2022/03/Tea-Time-franchise.jpg' },
-    { counterName: 'counter4', mobileNumber: '9876543213', email: 'counter4@gmail.com', vendorName: 'vendor4', createdAt: new Date(), counterImage: 'https://www.foodbusinessnews.net/ext/resources/2023/12/12/McDonalds-Lead_adst_Nitiphol.jpg?height=667&t=1702400888&width=1080' },
-    { counterName: 'counter5', mobileNumber: '9876543214', email: 'counter5@gmail.com', vendorName: 'vendor5', createdAt: new Date(), counterImage: 'https://images.jdmagicbox.com/comp/rajahmundry/q2/9999px883.x883.220423104048.q1q2/catalogue/-ybs6vdhcsw.jpg' },
-    { counterName: 'counter6', mobileNumber: '9876543215', email: 'counter6@gmail.com', vendorName: 'vendor6', createdAt: new Date(), counterImage: 'https://i.ytimg.com/vi/95VS8bfdi_M/maxresdefault.jpg' },
-    { counterName: 'counter7', mobileNumber: '9876543216', email: 'counter7@gmail.com', vendorName: 'vendor7', createdAt: new Date(), counterImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4LXm432XjlaiaWMHBJNoRh7lJxe2HtMjzqQ&s' },
-    { counterName: 'counter8', mobileNumber: '9876543217', email: 'counter8@gmail.com', vendorName: 'vendor8', createdAt: new Date(), counterImage: 'https://res.cloudinary.com/purnesh/image/upload/w_540,f_auto,q_auto:eco,c_limit/11708001666338.jpg' },
-    // { counterName: 'counter9', mobileNumber: '9876543218', email: 'counter9@gmail.com', vendorName: 'vendor9', createdAt: new Date(), counterImage: 'https://i.ytimg.com/vi/uXf3xXeu1x4/maxresdefault.jpg' },
-]
+
+
 
 function Availability() {
-    const [status, setStatus] = useState(true);  // true = Open, false = Closed
-
-    const handleStatusChange = (event) => {
-        setStatus(event.target.checked);
+    const [counters, setCounters] = useState([]);
+    const [switchStates, setSwitchStates] = useState({}); 
+    const [searchText, setSearchText] = useState(""); // Search text
+    const [filteredCounters, setFilteredCounters] = useState([]); // Filtered data
+  
+    const fetchData = async () => {
+        try {
+            const response = await CounterRegistrationApis.fetchAllRegisteredCounterDetails();
+            if (response.status === 200) {
+                setCounters(response.data);
+                setFilteredCounters(response.data)
+            }
+        } catch (error) {
+            // console.error("API call failed:", error);
+            alert("API was not called");
+        }
     };
 
-    const StyledTableCell = styled(TableCell)(({ theme }) => ({
-        [`&.${tableCellClasses.head}`]: {
-            backgroundColor: theme.palette.common.black,
-            color: theme.palette.common.white,
-        },
-        [`&.${tableCellClasses.body}`]: {
-            fontSize: 14,
-        },
-    }));
+    useEffect(() => {
+        fetchData();
+    }, []);
 
-    const StyledTableRow = styled(TableRow)(({ theme }) => ({
-        '&:nth-of-type(odd)': {
-            // backgroundColor: theme.palette.action.hover,
-            backgroundColor: "aliceblue",
-        },
-        // hide last border
-        '&:last-child td, &:last-child th': {
-            border: 0,
-        },
-    }));
+   
+    const handleChange = async (counter) => {
+       
+        const id = counter.ID;
+        const availability = counter.AVAILABLE == 1 ? 0 : 1; 
 
-    function createData(name, calories, fat, carbs, protein) {
-        return { name, calories, fat, carbs, protein };
-    }
+        console.log(counter,id,availability);
+        
 
-    const rows = [
-        createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-        createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-        createData('Eclair', 262, 16.0, 24, 6.0),
-        createData('Cupcake', 305, 3.7, 67, 4.3),
-        createData('Gingerbread', 356, 16.0, 49, 3.9),
+        try {
+            const response = await CounterRegistrationApis.registerCounterUpdateForAvailability(id, availability);
+            console.log(response);
+
+            if (response.status === 201) {
+                alert(response.data.message);
+                fetchData();
+            } else {
+                throw new Error("Failed to update availability");
+            }
+        } catch (error) {
+            alert("Error: " + (error.response?.data?.message || "API call failed"));
+            
+        }
+    };
+
+ const handleSearch = (event) => {
+    const searchValue = event.target.value.toLowerCase();
+    setSearchText(searchValue);
+
+    const filteredData = counters.filter((counter) =>
+        counter.COUNTERNAME.toLowerCase().includes(searchValue)
+    );
+    setFilteredCounters(filteredData);
+};
+  
+    const columns = [
+        {
+            name: "Counter Name",
+            selector: (row) => row.COUNTERNAME,
+            sortable: true,
+            wrap: true,
+            cell: (row) => <b>{row.COUNTERNAME}</b>,
+            
+        },
+        // {
+        //     name: "Owner Name",
+        //     selector: (row) => row.OWNERNAME,
+        //     sortable: true,
+        //     center: true,
+        //     cell: (row) => <b>{row.OWNERNAME}</b>,
+        // },
+        // {
+        //     name: "Mobile Number",
+        //     selector: (row) => row.MOBILENO,
+        //     sortable: true,
+        //     center: true,
+        //     cell: (row) => <b>{row.MOBILENO}</b>,
+        // },
+        {
+            name: "Status",
+            selector: (row) => row.AVAILABLE,
+            sortable: true,
+            center: true,
+            cell: (row) => (
+                <Badge bg={row.AVAILABLE === 1 ? "success" : "danger"} className="p-2">
+                    {row.AVAILABLE === 1 ? "Open" : "Closed"}
+                </Badge>
+            ),
+        },
+        
+        {
+            name: "Actions",
+            center: true,
+            cell: (row) => (
+                <Button
+                    variant="contained"
+                    className="px-3 py-1 fw-bold rounded-pill w-50 h-75"
+                    onClick={() => handleChange(row)}
+                >
+                    Change
+                </Button>
+            ),
+        },
     ];
 
-    const [state, setState] = useState({
-        gilad: true,
-        jason: false,
-        antoine: true,
-    });
 
-    const [switchStates, setSwitchStates] = useState({
-
-        counter1: true,
-        counter2: true,
-        counter3: true,
-        counter4: true,
-        counter5: true,
-        counter6: true,
-        counter7: true,
-        counter8: true,
-        counter9: true,
-        counter10: true,
-    });
-
-    const handleChange = (event) => {
-        const { name, checked } = event.target;
-
-        setSwitchStates((prevState) => ({
-            ...prevState,
-            [name]: checked,
-        }));
-
-
-    };
-
-    console.log(switchStates);
-
-
-
+const tableStyles = {
+    tableHead: {
+        backgroundColor: "darkblue",
+        color: "white",
+        fontSize: "16px",
+        padding: "12px",
+        Margin:'10px',
+    },
+    tableRow: {
+        borderBottom: "1px solid #ccc",
+    },
+    tableRowHover: {
+        backgroundColor: "#f8f9fa",
+    },
+    searchInput: {
+        width: "100%",
+        padding: "10px",
+        borderRadius: "10px",
+        border: "2px solid #007bff",
+        fontSize: "16px",
+        marginBottom: "10px",
+    },
+};
 
     return (
-        <div className='w-100 h-100'>
-            {/* <Card
-                sx={{
-                    p: 3,
-                    maxWidth: 400,
-                    margin: 'auto', opacity: status ? 1 : 0.5,  // Reduce opacity when status is closed (muted effect)
-                    transition: 'filter 0.1s ease-in-out'  // Smooth transition for blur effect
-                }}
-            >
-                <Typography variant="h5">Counter Name: Counter 3</Typography>
-                <Typography variant="h6" sx={{ mb: 2 }}>
-                    Mobile Number: 9876543210
-                </Typography>
-
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={status}
-                            onChange={handleStatusChange}
-                            name="status"
-                            color="primary"
+        <Container className="mt-4">
+            <h4 className="text-primary mb-3">Counters Availability</h4>
+            
+                        <TextField
+                            type="text"
+                            placeholder="🔍 Search Counter Name..."
+                            value={searchText}
+                            onChange={handleSearch}
+                            className="search-input mb-3"
                         />
-                    }
-                    label={status ? 'Open' : 'Closed'}
-                />
-
-                <Button variant="contained" sx={{ mt: 2 }} onClick={() => alert("Status saved!")}>
-                    Save Status
-                </Button>
-            </Card> */}
-            <>
-                
-                <TableContainer style={{width:"100%"}}>
-                    <Typography variant='h5'className='ms-5 mt-2 text-primary' fontWeight="bold">Counters Availability :</Typography>
-                    <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', padding: '40px 40px 40px 40px', borderRadius: '20px' }}>
-                        <Table sx={{ maxWidth: 1000, borderRadius: '20px' }} aria-label="customized table">
-                            <TableHead>
-                                <TableRow>
-                                    {/* <StyledTableCell align="center">Counter ID</StyledTableCell> */}
-                                    <StyledTableCell align="" style={{backgroundColor:"midnightblue"}}>Counter Name</StyledTableCell>
-                                    <StyledTableCell align="" style={{backgroundColor:"midnightblue"}} className='counter_name_switch'>Status</StyledTableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {counters.map((counter, index) => (
-                                    <StyledTableRow key={index}>
-                                        <StyledTableCell align=""><b className='fs-3 counter_name '>{counter.counterName}</b></StyledTableCell>
-                                        <StyledTableCell align="" className='counter_name_switch'>
-                                            <FormControlLabel
-                                                control={
-                                                    <Switch
-                                                        checked={!!switchStates[counter.counterName]}
-                                                        onChange={handleChange}
-                                                        name={counter.counterName}
-                                                        color="success"
-                                                    />
-                                                }
-                                                label={switchStates[counter.counterName] ? "open" : "closed"}
-                                            />
-                                        </StyledTableCell>
-                                    </StyledTableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </Box>
-                </TableContainer>
-               
-            </>
-
-
-        </div >
-    )
+                  
+            <DataTable
+                        columns={columns}
+                        data={filteredCounters}
+                        pagination
+                        highlightOnHover
+                        striped
+                        responsive
+                        defaultSortField="COUNTERNAME"
+                        customStyles={{
+                            headCells: {
+                                style: tableStyles.tableHead,
+                            },
+                            rows: {
+                                style: tableStyles.tableRow,
+                                hoverStyle: tableStyles.tableRowHover,
+                            },
+                        }}
+                       className="custom-table"
+                    />
+        </Container>
+    );
 }
 
-export default Availability
+export default Availability;
+

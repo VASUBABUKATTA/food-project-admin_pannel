@@ -1,27 +1,4 @@
-// import React from 'react'
-// import SideNav from './SideNav'
-// import { Outlet } from 'react-router-dom'
-// import Header from './Header'
 
-
-// function Home() {
-//     return (
-//         <>
-//             < Header />
-//             {/* <div className='row'>
-//                 <div className='col-2 bg-warning'>
-//                     <SideNav />
-//                 </div>
-//                 <div className='col-10'>
-//                     <Outlet />
-//                 </div>
-//             </div> */}
-            
-//         </>
-//     )
-// }
-
-// export default Home
 
 import React from "react";
 import { Carousel } from "react-responsive-carousel";
