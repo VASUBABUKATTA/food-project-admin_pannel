@@ -1,12 +1,13 @@
 
 import React, { use, useEffect, useState } from 'react'
-import { Card, Typography, Button, Switch, FormControlLabel, Container,Badge , TextField } from '@mui/material';
+import { Card, Typography, Button, Switch, FormControlLabel, Container , TextField } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 import CounterRegistrationApis from '../Api_Services/CounterRegistrationApis';
 import DataTable from 'react-data-table-component'
 
-
+import {Badge} from 'react-bootstrap';
+import { toast } from 'react-toastify';
 
 
 
@@ -47,7 +48,17 @@ function Availability() {
             console.log(response);
 
             if (response.status === 201) {
-                alert(response.data.message);
+                // alert(response.data.message);
+                 toast.success("Counter Details Updated Successfully", {
+                                      position: "top-right",
+                                      autoClose: 5000, // Closes after 3 seconds
+                                      hideProgressBar: false,
+                                      closeOnClick: true,
+                                      pauseOnHover: true,
+                                      draggable: true,
+                                      progress: undefined,
+                                      theme: "light",
+                                    });
                 fetchData();
             } else {
                 throw new Error("Failed to update availability");
@@ -109,7 +120,8 @@ function Availability() {
             cell: (row) => (
                 <Button
                     variant="contained"
-                    className="px-3 py-1 fw-bold rounded-pill w-50 h-75"
+                    className=" fw-bold rounded-pill"
+                    sx={{width:{xs:"100%",sm:'75%',md:"75%",lg:'50%'}}}
                     onClick={() => handleChange(row)}
                 >
                     Change

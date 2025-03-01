@@ -28,6 +28,9 @@ import p13 from '../../assets/pic13.webp';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
+// import toast from'react-toastify';
 
 function HomePage() {
 
@@ -63,6 +66,16 @@ function HomePage() {
       console.log(credentials)
         e.preventDefault();
         if (credentials.username === "admin" && credentials.password === "admin@123") {
+          toast.success("Login Successfull!", {
+            position: "top-right",
+            autoClose: 5000, // Closes after 3 seconds
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
             navigate("/nestead/sidenav");
         } else {
             alert("Invalid credentials");

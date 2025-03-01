@@ -5,7 +5,8 @@ import B from './components/admin/B';
 import Dashboard from './components/admin/Dashboard';
 import Availability from './components/admin/Availability';
 import MenuItems from './components/admin/Menu Items';
-
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
           <Route path="settingsPannel" element={<MenuItems />} />
         </Route>
       </Routes> 
-
+      <ToastContainer />
     </div>
   )
 }

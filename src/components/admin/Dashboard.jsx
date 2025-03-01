@@ -13,6 +13,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import CounterRegistrationApis from '../Api_Services/CounterRegistrationApis';
 
 import { Accessibility, AccountCircle, ArrowBackIosTwoTone, CalendarMonth, CurrencyRupee, Email, LocalMall, Phone, Storefront, Tapas } from '@mui/icons-material';
+import { toast } from 'react-toastify';
 
 function Dashboard() {
     const [tab, setTab] = useState("cards");
@@ -39,7 +40,17 @@ function Dashboard() {
             }
         } catch (error) {
             // console.error("API call failed:", error);
-            alert("API was not called");
+            // alert("API was not called");
+            toast.warn("API was not called!", {
+                position: "top-right",
+                autoClose: 5000, // Closes after 3 seconds
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
         }
     };
 
@@ -147,7 +158,17 @@ function Dashboard() {
             try {
                 const response = await CounterRegistrationApis.registerCounterDelete(deleteId);
                 // console.log("delete APi response :", response)
-                alert("Record deleted Successfully")
+                // alert("Record deleted Successfully")
+                toast.success("Record deleted Successfully..!", {
+                    position: "top-right",
+                    autoClose: 5000, // Closes after 3 seconds
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                  });
                 fetchData();
             } catch (error) {
                 // console.log(error.response.data.message);
@@ -304,7 +325,17 @@ function Dashboard() {
                 // console.log("Response:", response);
 
                 if (response.status === 201) {
-                    alert(response.data.message);
+                    // alert(response.data.message);
+                    toast.success("Counter Added Successfully!", {
+                        position: "top-right",
+                        autoClose: 5000, // Closes after 3 seconds
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                      });
                     setFormData({
                         ownerName: "",
                         mobileNo: "",
@@ -320,7 +351,17 @@ function Dashboard() {
             } catch (error) {
                 // console.error("Error:", error);
                 if (error.response?.status === 400) {
-                    alert(error.response.data.message);
+                    // alert(error.response.data.message);
+                    toast.warn(error.response.data.message, {
+                        position: "top-right",
+                        autoClose: 5000, // Closes after 3 seconds
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                      });
                 }
             }
         } else {
@@ -382,7 +423,17 @@ function Dashboard() {
                 // console.log("Response:", response);
 
                 if (response.status === 201) {
-                    alert(response.data.message);
+                    // alert(response.data.message);
+                    toast.success("Counter Details were Updated Successfully!", {
+                        position: "top-right",
+                        autoClose: 5000, // Closes after 3 seconds
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                      });
                     setFormData1({
                         ownerName: "",
                         mobileNo: "",
@@ -406,6 +457,9 @@ function Dashboard() {
         }
     };
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+      }, []);
 
     return (
         <>
@@ -415,16 +469,16 @@ function Dashboard() {
                 {tab === 'cards' && (
 
                     <div className='container mx-2'>
-                        <div className="row mt-3">
-                            <div className="col-6">
+                        <div className="row mb-3">
+                            <div className="col-sm-12 col-xs-6 col-md-6 ">
                                 <Typography variant='h5' className='ms-3 mb-4 text-primary' fontWeight="bold">
                                     List of Counters Profiles :
                                 </Typography>
                             </div>
-                            <div className="col-6 text-end">
+                            <div className="text-end col-sm-12 col-xs-6 col-md-6">
                                 <Button
                                     variant="contained"
-                                    sx={{ width: { xs: "50%", md: "25%" }, height: "50px", mr: 3 }}
+                                    sx={{ width: { xs: "50%", md: "50%",lg:"25%" }, height: "75", mr: 3 }}
                                     onClick={() => setShow(true)}
                                 >
                                     Add Counter
@@ -703,13 +757,13 @@ function Dashboard() {
                 </>) : (<></>)}
 
                 {showProfile ? (<> <>
-                    <div className='mb-2 ms-3'>
-                        <div className='col-6 mt-3 d-flex ms-5'> <Link className='ms-5' style={{ textDecoration: "none" }}> <ArrowBackIosTwoTone
+                    <div className='mb-2 ms-1'>
+                        <div className='row mt-3'> 
+                            <div className='ms-2 me-2 col-sm-12 col-xs-6 col-md-6 d-flex'><Link  style={{ textDecoration: "none" }}> <ArrowBackIosTwoTone
                             onClick={handleBack}
                             style={{ fontSize: 30, color:'black', cursor: "pointer", fontWeight: "bold" }}
-                        /></Link>
-                            <Typography variant="h5" className="text-center fw-bold fs-4 ">Counter Profile Information</Typography>
-                        </div>
+                        /></Link> <Typography variant="h5" className='text-center text-primary fw-bold fs-4'>Counter Profile Information</Typography></div>
+                          </div>
 
 
                     </div>

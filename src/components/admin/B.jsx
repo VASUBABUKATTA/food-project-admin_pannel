@@ -54,6 +54,7 @@ import MenuItems from './Menu Items';
 import CounterRegistrationApis from '../Api_Services/CounterRegistrationApis.jsx'
 
 import NewMenuItems from './NewMenuItems.jsx';
+import { toast } from 'react-toastify';
 
 
 
@@ -63,9 +64,11 @@ function DemoPageContent({ pathname }) {
   const [state, setState] = useState(false);
 
   const [counterId,setCounterId] = useState('')
+  const [counterName,setCounterName] = useState('')
 
   // console.log(pathname);
- 
+
+  
   const fetchData1 = async () => {
     try {
       const response = await CounterRegistrationApis.fetchAllRegisteredCounterDetails();
@@ -73,12 +76,13 @@ function DemoPageContent({ pathname }) {
         setCounters1(response.data);
         // Set default values from the first counter
         setCounterId(response.data[0].ID);
+        setCounterName(response.data[0].COUNTERNAME)
       } else {
-        console.error("API response is not an array:", response.data);
+        // console.error("API response is not an array:", response.data);
         setCounters1([]); // Default to empty array to prevent errors
       }
     } catch (error) {
-      console.error("API call failed:", error);
+      // console.error("API call failed:", error);
       setCounters1([]); // Set default value to avoid issues
     }
   };
@@ -89,6 +93,16 @@ function DemoPageContent({ pathname }) {
 
   const navigate = useNavigate();
   if (pathname == '/logout') {
+    toast.success("Logout Successfull!", {
+      position: "top-right",
+      autoClose: 5000, // Closes after 3 seconds
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
     navigate('/')
   }
 
@@ -99,11 +113,11 @@ function DemoPageContent({ pathname }) {
         setCounters1(response.data);
         
       } else {
-        console.error("API response is not an array:", response.data);
+        // console.error("API response is not an array:", response.data);
         setCounters1([]); // Default to empty array to prevent errors
       }
     } catch (error) {
-      console.error("API call failed:", error);
+      // console.error("API call failed:", error);
       setCounters1([]); // Set default value to avoid issues
     }
   };
@@ -113,7 +127,7 @@ function DemoPageContent({ pathname }) {
   });
 
   useEffect(() => {
-    if (pathname.startsWith("/c")) {
+    if (pathname.startsWith("/")) {
       const parts = pathname.split("/");
       const id = parts[1];
       const foundCounter = counters1.find(
@@ -124,12 +138,12 @@ function DemoPageContent({ pathname }) {
         setState(true);
       }
     }
-    else if (pathname.startsWith("/")) {
-      const parts = pathname.split("/");
-      const counterName = parts[1];
-      
-    }
-
+   
+if(pathname == "/")
+{
+  console.log("hi");
+  fetchData1()
+}
 
     if (
       pathname.startsWith("/nestead/sidenav/counters/all/Profiles") ||
@@ -138,16 +152,21 @@ function DemoPageContent({ pathname }) {
     ) {
       setState(false);
     } else {
+      const parts = pathname.split("/");
+      const id = parts[1];
+      // console.log(id);
+      setCounterId(id);
+      const counterName1 = counters1.findIndex((index)=> index.ID == id);
+      // console.log(counterName1);
+      
+    setCounterName(counters1[counterName1]?.COUNTERNAME);
       setState(true)
     }
-    const parts = pathname.split("/");
-      const id = parts[1];
-      console.log(id);
-      setCounterId(id);
+   
   }, [pathname]);
 
-
-
+  
+ 
 
 
   return (
@@ -159,7 +178,7 @@ function DemoPageContent({ pathname }) {
      
       {state ? (<>   
    {/* <Menu counterId ={counterId}/> */}
-   <NewMenuItems counterId ={counterId} />
+   <NewMenuItems counterId ={counterId} counterName={counterName} />
       </>) : <></>}
     </Box>
   );
@@ -187,11 +206,11 @@ function DashboardLayoutBranding(props) {
         setCounters1(response.data);
         
       } else {
-        console.error("API response is not an array:", response.data);
+        // console.error("API response is not an array:", response.data);
         setCounters1([]); // Default to empty array to prevent errors
       }
     } catch (error) {
-      console.error("API call failed:", error);
+      // console.error("API call failed:", error);
       setCounters1([]); // Set default value to avoid issues
     }
   };
@@ -200,9 +219,13 @@ function DashboardLayoutBranding(props) {
     fetchData();
   });
 
+  const truncateText = (text, maxLength) => {
+    return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
+  };
+
   // Ensure children is always an array to prevent .map() errors
   const NAVIGATION1 = [
-    { kind: 'header', title: <Typography sx={{ color: '#ffffff' }}>Menu Items</Typography> },
+    { kind: 'header', title: <Typography sx={{ color: '#ffffff' }}>Menu</Typography> },
     {
       segment: "/abc",
       title: "Counters",
@@ -221,7 +244,7 @@ function DashboardLayoutBranding(props) {
               // overflow:'auto'
             }} >
               <div  style={counter.AVAILABLE == 0 ? { filter: "blur(0px)", color:'black',opacity:"0.2", transition: "0.3s ease-in-out",} : {}} >
-               {counter.COUNTERNAME}</div>
+              {truncateText(counter.COUNTERNAME,10)}</div>
            
           </Button>
         )
@@ -308,7 +331,11 @@ const demoTheme = createTheme({
       theme={demoTheme}
       window={demoWindow}
     >
-      <DashboardLayout >
+      <DashboardLayout 
+      // sx={{
+      //   display: { xs: 'block', sm: 'block', md: 'flex' }, 
+      // }}
+      >
         <DemoPageContent pathname={router.pathname} />
       </DashboardLayout>
     </AppProvider>

@@ -29,8 +29,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TablePagination from '@mui/material/TablePagination';
 import DataTable from 'react-data-table-component';
+import { toast } from 'react-toastify';
 
-function NewMenuItems({ counterId }) {
+function NewMenuItems({ counterId,counterName }) {
 
     const [categoryList, setCategoryList] = useState([])
     const [filteredMenuItems, setFilteredMenuItems] = useState([]);
@@ -43,7 +44,18 @@ function NewMenuItems({ counterId }) {
         try {
             const response = await Service.get(`/menuItem/getCategory/ByCounterId/${counterId}`);
             if (response.status == 200) {
-                console.log(response.data)
+               
+                //  toast.success("Categories Fetched Successfully!", {
+                //       position: "top-right",
+                //       autoClose: 5000, // Closes after 3 seconds
+                //       hideProgressBar: false,
+                //       closeOnClick: true,
+                //       pauseOnHover: true,
+                //       draggable: true,
+                //       progress: undefined,
+                //       theme: "light",
+                //     });
+                
                 setCategoriesTable(false)
                 setOpen(true);
                 setCategoryList(response.data)
@@ -51,8 +63,18 @@ function NewMenuItems({ counterId }) {
                 return response.data;
             }
         } catch (error) {
-            console.log(error);
+          
             setCategoryList([])
+            // toast.error("Categories were Not There!", {
+            //     position: "top-right",
+            //     autoClose: 5000, // Closes after 3 seconds
+            //     hideProgressBar: false,
+            //     closeOnClick: true,
+            //     pauseOnHover: true,
+            //     draggable: true,
+            //     progress: undefined,
+            //     theme: "light",
+            //   });
 
         }
     }
@@ -66,6 +88,7 @@ function NewMenuItems({ counterId }) {
 
 
 
+// console.log(counterName);
 
 
 
@@ -121,11 +144,11 @@ function NewMenuItems({ counterId }) {
                 setCategoriesTable(true);
                 setMenuItems(response.data)
                 setFilteredMenuItems(response.data)
-                console.log(response.data)
+                // console.log(response.data)
                 return response.data;
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             setMenuItems([])
             setFilteredMenuItems([]);
         }
@@ -149,11 +172,12 @@ function NewMenuItems({ counterId }) {
     }
     return (
         <div>
-            {/* The counter: {counterId} */}
+            <h3 className="text-start m-1   fw-bold fs-3"><span >Counter Name :</span><span className='text-primary ms-2'>{counterName}</span> </h3>
             {open && categoryList.length > 0 ? (
                 <div>
-                    <h3 className="text-start m-3  text-primary fw-bold fs-3">Categories</h3>
-                    <div className="row ms-3">
+                   
+                    <h3 className="text-start ms-2   text-primary fw-bold fs-3">Categories</h3>
+                    <div className="row px-3">
                         {categoryList.map((item, index) => (
                             <div key={index} className="col-12 col-md-6 col-lg-4 col-sm-3">
                                 <div
@@ -162,7 +186,8 @@ function NewMenuItems({ counterId }) {
                                         width: "100%",
                                         transition: "transform 0.3s ease, box-shadow 0.3s ease",
                                         cursor: "pointer",
-                                        border:'2px solid black'
+                                        border:'2px solid black',
+                                        backgroundColor:'aliceblue'
                                     }}
                                     onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.05)"}
                                     onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1.0)"}
@@ -177,7 +202,10 @@ function NewMenuItems({ counterId }) {
                         ))}
                     </div>
                 </div>
-            ):(<>{!CategoriesTable && ( <div className='text-center text-primary mt-3 fw-bold fs-3'> Categories Are Not Available in this Counter </div>)}
+            ):(<>{!CategoriesTable && ( <>
+             {/* <h3 className="text-start m-3   fw-bold fs-3"><span >Counter Name :</span><span className='text-primary ms-2'>{counterName}</span> </h3> */}
+                 
+            <div className='text-center text-primary mt-3 fw-bold fs-3'> Categories Are Not Available in this Counter </div></>)}
            </>)}
 
             {CategoriesTable && (

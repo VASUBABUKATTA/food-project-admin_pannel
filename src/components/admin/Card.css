@@ -19,7 +19,7 @@
     transition: transform 0.3s ease;
   }
   
-  .card1:hover {
+  .card_data:hover {
     transform: translateY(-5px);
   }
   
