@@ -24,6 +24,11 @@ const CategoryService =
      fetchAllDetailsByCounterID(id)
     {
         return axios.delete(`${API_BASE_URL}$/getCategory/ByCounterId/${id}`);
+    },
+
+    fetchAllCategoryDetailsByCounterId(id)
+    {
+        return axios.get(`${API_BASE_URL}/menuItem/getcategorysById/${id}`);
     }
 
 }

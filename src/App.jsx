@@ -7,25 +7,65 @@ import Availability from './components/admin/Availability';
 import MenuItems from './components/admin/Menu Items';
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from 'react-toastify';
+import UserHomePage from './components/userPannel/UserHomePage';
+import CounterPanelLogin from './components/CounterPannel/CounterPnnelLogin';
+// import Menu from './components/CounterPannel/MenuItems';
+import LandingPage from './components/CounterPannel/LandingPage';
+import Settings from './components/CounterPannel/Settings';
+
+import Dashboard1 from './components/CounterPannel/Dashboard';
+import Menu from './components/CounterPannel/MenuItems';
+import Availability1 from './components/CounterPannel/Availability';
+import CounterMenuItems from './components/CounterPannel/CounterMenuItems';
 
 function App() {
   return (
     <div>
       <Routes>
+        {/* Admin Routes : */}
         <Route path='/' element={<HomePage />} />
         <Route path='/logout' element={<HomePage />} />
-      
-        {/* <Route path='/nestead/sidenav' element={<B />} /> */}
 
-         <Route path="/nestead/sidenav" element={<B />}>
+        {/* Neasted Routing */}
+        <Route path="/nestead/sidenav" element={<B />}>
           <Route index element={<B />} />
           <Route path="counters/all/Profiles" element={<Dashboard />} />
-          <Route path="counters/Availability" element={<Availability/>} />
-         
+          <Route path="counters/Availability" element={<Availability />} />
           <Route path="settingsPannel" element={<MenuItems />} />
         </Route>
-      </Routes> 
-      <ToastContainer />
+
+
+        {/* CounterPannel Routes */}
+        <Route path='/CounterPannel/MenuItems' element={<LandingPage />} />
+        <Route path='/dashboard' element={<Dashboard1 />} />
+        {/* <Route path='/menu' element={<Menu />} /> */}
+        <Route path='/menuAvailability' element={<Availability1 />} />
+        <Route path='/menu' element={<CounterMenuItems />} />
+        <Route path="/settings" element={<Settings />} />
+
+
+
+        {/* User Pannel Routes */}
+        <Route path='/userPannel' element={<UserHomePage />} />
+        <Route path='/CounterPannel/Login' element={<CounterPanelLogin />} />
+        {/* <Route path='/CounterPannel/MenuItems' element={<Menu />} /> */}
+
+      </Routes>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        style={{
+          marginLeft: window.innerWidth < 600 ? "100px" : "",
+          width: window.innerWidth < 600 ? "80%" : "300px",  // Smaller width on mobile
+          fontSize: window.innerWidth < 600 ? "12px" : "16px", // Smaller font on mobile
+        }} />
     </div>
   )
 }

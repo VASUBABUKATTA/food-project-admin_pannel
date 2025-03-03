@@ -12,6 +12,16 @@ static fetchAllRegisteredCounterDetails()
    return axios.get(`${baseUrl}/getAll`);
 }
 
+static counterogin(mobile)
+{
+   return axios.get(`${baseUrl}/getByMobileNo/${mobile}`);
+}
+
+static counterIdByMobNo(mobile)
+{
+   return axios.get(`${baseUrl}/getCounterI/ByMobileNo/${mobile}`);
+}
+
 static registerCounter (formData)
 {
     const response =  axios.post(`${baseUrl}/save`, formData, {
@@ -47,6 +57,7 @@ static registerCounterUpdateForAvailability (id,availability)
     const response =  axios.put(`${baseUrl}/getById/availability/${id}/${availability}`);
     return response;
 }
+
 
 }
 export default CounterRegistrationApis;

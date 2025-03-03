@@ -204,7 +204,7 @@ function DashboardLayoutBranding(props) {
       const response = await CounterRegistrationApis.fetchAllRegisteredCounterDetails();
       if (response.status === 200 && Array.isArray(response.data)) {
         setCounters1(response.data);
-        
+        // console.log("hi")
       } else {
         // console.error("API response is not an array:", response.data);
         setCounters1([]); // Default to empty array to prevent errors
