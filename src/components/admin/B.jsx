@@ -55,6 +55,7 @@ import CounterRegistrationApis from '../Api_Services/CounterRegistrationApis.jsx
 
 import NewMenuItems from './NewMenuItems.jsx';
 import { toast } from 'react-toastify';
+import { confirmAlert } from 'react-confirm-alert';
 
 
 
@@ -65,6 +66,7 @@ function DemoPageContent({ pathname }) {
 
   const [counterId,setCounterId] = useState('')
   const [counterName,setCounterName] = useState('')
+  const [pathname1,setPathName1]=useState('');
 
   // console.log(pathname);
 
@@ -92,19 +94,84 @@ function DemoPageContent({ pathname }) {
   },[]);
 
   const navigate = useNavigate();
-  if (pathname == '/logout') {
-    toast.success("Logout Successfull!", {
-      position: "top-right",
-      autoClose: 5000, // Closes after 3 seconds
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-    navigate('/')
-  }
+
+  useEffect(() => {
+    if (pathname === "/logout") {
+      confirmAlert({
+        title: "Confirm Logout",
+        message: "Are you sure you want to log out from the application?",
+        buttons: [
+          {
+            label: "Ok",
+            onClick: () => {
+              
+              navigate("/"); // Redirect after logout
+              
+              toast.success("Logout Successful!", {
+                position: "top-right",
+                autoClose: 3000, // Closes after 3 seconds
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
+
+              // Perform logout logic (clear local storage, session, etc.)
+              localStorage.clear();
+              sessionStorage.clear();
+              
+            }
+          },
+          {
+            label: "Cancel",
+            onClick: () => {
+              setPathName1(pathname1);
+              
+            }
+          }
+        ]
+      });
+    }
+    else{
+      setPathName1(pathname)
+    }
+  }, [pathname]); 
+
+//   if (pathname == '/logout') {
+
+// confirmAlert({
+//   title:"Conform Logout",
+//   message:'Are You Sure You want to Logout From The Application ?',
+//   buttons:[
+//     {
+//       label:"Yes",
+//       onClick:()=>{
+//         toast.success("Logout Successfull!", {
+//           position: "top-right",
+//           autoClose: 5000, // Closes after 3 seconds
+//           hideProgressBar: false,
+//           closeOnClick: true,
+//           pauseOnHover: true,
+//           draggable: true,
+//           progress: undefined,
+//           theme: "light",
+//         });
+//         navigate('/')
+//       }
+//     },
+//     {
+//       label:"No",
+//       onClick:()=>{
+
+//       }
+//     }
+//   ]
+// })
+
+   
+//   }
 
   const fetchData = async () => {
     try {
@@ -148,9 +215,14 @@ if(pathname == "/")
     if (
       pathname.startsWith("/nestead/sidenav/counters/all/Profiles") ||
       pathname.startsWith("/nestead/sidenav/counters/Availability") ||
-      pathname.startsWith("/nestead/sidenav/settingsPannel")
+      pathname.startsWith("/nestead/sidenav/settingsPannel") 
+      
     ) {
       setState(false);
+    }
+    else if(pathname == "/logout")
+    {
+
     } else {
       const parts = pathname.split("/");
       const id = parts[1];
@@ -172,9 +244,9 @@ if(pathname == "/")
   return (
     <Box className='mt-2'>
    
-      {pathname == "/nestead/sidenav/settingsPannel" ? (<><MenuItems /></>) : (<></>)}
-      {pathname == "/nestead/sidenav/counters/Availability" ? (<><Availability /></>) : (<></>)}
-      {pathname == "/nestead/sidenav/counters/all/Profiles" ? (<><Dashboard1 /></>) : (<></>)}
+      {pathname1 == "/nestead/sidenav/settingsPannel" ? (<><MenuItems /></>) : (<></>)}
+      {pathname1 == "/nestead/sidenav/counters/Availability" ? (<><Availability /></>) : (<></>)}
+      {pathname1 == "/nestead/sidenav/counters/all/Profiles" ? (<><Dashboard1 /></>) : (<></>)}
      
       {state ? (<>   
    {/* <Menu counterId ={counterId}/> */}

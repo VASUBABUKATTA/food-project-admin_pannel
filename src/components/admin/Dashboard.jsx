@@ -14,6 +14,7 @@ import CounterRegistrationApis from '../Api_Services/CounterRegistrationApis';
 
 import { Accessibility, AccountCircle, ArrowBackIosTwoTone, CalendarMonth, CurrencyRupee, Email, LocalMall, Phone, Storefront, Tapas } from '@mui/icons-material';
 import { toast } from 'react-toastify';
+import { confirmAlert } from 'react-confirm-alert';
 
 function Dashboard() {
     const [tab, setTab] = useState("cards");
@@ -152,28 +153,67 @@ function Dashboard() {
     }
 
     const deleteCounter = async (counter) => {
+
         const deleteId = counter.ID;
-        const isConfirmed = window.confirm("Are you sure you want to delete this counter?");
-        if (isConfirmed) {
-            try {
-                const response = await CounterRegistrationApis.registerCounterDelete(deleteId);
-                // console.log("delete APi response :", response)
-                // alert("Record deleted Successfully")
-                toast.success("Record deleted Successfully..!", {
-                    position: "top-right",
-                    autoClose: 5000, // Closes after 3 seconds
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "light",
-                  });
-                fetchData();
-            } catch (error) {
-                // console.log(error.response.data.message);
-            }
-        }
+        confirmAlert({
+            title: "Confirm Update",
+            message:"Are you sure you want to delete this counter?",
+            
+            buttons:[
+                {
+                    label:"Ok",
+                    onClick:async ()=>{
+                        try {
+                            const response = await CounterRegistrationApis.registerCounterDelete(deleteId);
+                            // console.log("delete APi response :", response)
+                            // alert("Record deleted Successfully")
+                            toast.success("Record deleted Successfully..!", {
+                                position: "top-right",
+                                autoClose: 5000, // Closes after 3 seconds
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                                theme: "light",
+                              });
+                            fetchData();
+                        } catch (error) {
+                            // console.log(error.response.data.message);
+                        }
+                    }
+                    
+                    
+                },
+                {
+                    label:"Cancel",
+                    onClick:()=>{}
+                }
+            ]
+        })
+
+       
+        // const isConfirmed = window.confirm("Are you sure you want to delete this counter?");
+        // if (isConfirmed) {
+        //     try {
+        //         const response = await CounterRegistrationApis.registerCounterDelete(deleteId);
+        //         // console.log("delete APi response :", response)
+        //         // alert("Record deleted Successfully")
+        //         toast.success("Record deleted Successfully..!", {
+        //             position: "top-right",
+        //             autoClose: 5000, // Closes after 3 seconds
+        //             hideProgressBar: false,
+        //             closeOnClick: true,
+        //             pauseOnHover: true,
+        //             draggable: true,
+        //             progress: undefined,
+        //             theme: "light",
+        //           });
+        //         fetchData();
+        //     } catch (error) {
+        //         // console.log(error.response.data.message);
+        //     }
+        // }
     }
 
     useEffect(() => {
@@ -534,6 +574,8 @@ function Dashboard() {
                                     value={formData.ownerName} onChange={handleChange}
                                     margin="normal" required
                                     // style={{border:'2px light black'}}
+                                    error={formDataError.ownerName}
+                                    helperText={formDataError.ownerName}
                                     variant='outlined'
                                     onKeyPress={(e) => {
                                         const isValidInput = /^[a-zA-Z\s]*$/; // Allows letters and spaces
@@ -547,8 +589,8 @@ function Dashboard() {
                                     }}
 
                                 />
-                                <small>
-                                    {formDataError.ownerName && <span className="text-danger">{formDataError.ownerName}</span>}</small>
+                                {/* <small> */}
+                                    {/* {formDataError.ownerName && <span className="text-danger">{formDataError.ownerName}</span>}</small> */}
                                 <TextField
                                     fullWidth label="Mobile Number" name="mobileNo" type="tel"
                                     onKeyPress={(e) => {
@@ -560,12 +602,16 @@ function Dashboard() {
                                     inputProps={{
                                         maxLength: 10, // Restrict input length
                                     }}
+                                    error={formDataError.mobileNo}
+                                    helperText={formDataError.mobileNo}
                                     value={formData.mobileNo} onChange={handleChange}
                                     margin="normal" required
                                 />
-                                <small> {formDataError.mobileNo && <span className="text-danger">{formDataError.mobileNo}</span>}</small>
+                                {/* <small> {formDataError.mobileNo && <span className="text-danger">{formDataError.mobileNo}</span>}</small> */}
                                 <TextField
                                     fullWidth label="Email" name="email" type="email"
+                                    error={formDataError.email}
+                                    helperText={formDataError.email}
                                     value={formData.email} onChange={handleChange}
                                     margin="normal" required
                                     inputProps={{
@@ -573,9 +619,11 @@ function Dashboard() {
                                     }}
 
                                 />
-                                <small> {formDataError.email && <span className="text-danger">{formDataError.email}</span>}</small>
+                                {/* <small> {formDataError.email && <span className="text-danger">{formDataError.email}</span>}</small> */}
                                 <TextField
                                     fullWidth label="Counter Name" name="counterName"
+                                    error={formDataError.counterName}
+                                    helperText={formDataError.counterName}
                                     value={formData.counterName} onChange={handleChange}
                                     margin="normal" required
                                     onKeyPress={(e) => {
@@ -589,7 +637,7 @@ function Dashboard() {
                                         maxLength: 60, // Restrict input length
                                     }}
                                 />
-                                <small> {formDataError.counterName && <span className="text-danger">{formDataError.counterName}</span>}</small>
+                                {/* <small> {formDataError.counterName && <span className="text-danger">{formDataError.counterName}</span>}</small> */}
 
 
 
@@ -649,6 +697,8 @@ function Dashboard() {
                             <form onSubmit={handleSubmit1} id='add_counter1'>
                                 <TextField
                                     fullWidth label="Owner Name" name="ownerName"
+                                    error={formDataError1.ownerName}
+                                    helperText={formDataError1.ownerName}
                                     value={formData1.ownerName} onChange={handleChange1}
                                     margin="normal" required
                                     // style={{border:'2px light black'}}
@@ -665,10 +715,12 @@ function Dashboard() {
                                     }}
 
                                 />
-                                <small>
-                                    {formDataError1.ownerName && <span className="text-danger">{formDataError1.ownerName}</span>}</small>
+                                {/* <small>
+                                    {formDataError1.ownerName && <span className="text-danger">{formDataError1.ownerName}</span>}</small> */}
                                 <TextField
                                     fullWidth label="Mobile Number" name="mobileNo" type="tel"
+                                    error={formDataError1.mobileNo}
+                                    helperText={formDataError1.mobileNo}
                                     onKeyPress={(e) => {
                                         const isValidInput = /[0-9]/;
                                         if (!isValidInput.test(e.key)) {
@@ -681,9 +733,11 @@ function Dashboard() {
                                     value={formData1.mobileNo} onChange={handleChange1}
                                     margin="normal" required
                                 />
-                                <small> {formDataError1.mobileNo && <span className="text-danger">{formDataError1.mobileNo}</span>}</small>
+                                {/* <small> {formDataError1.mobileNo && <span className="text-danger">{formDataError1.mobileNo}</span>}</small> */}
                                 <TextField
                                     fullWidth label="Email" name="email" type="email"
+                                    error={formDataError1.email}
+                                    helperText={formDataError1.email}
                                     value={formData1.email} onChange={handleChange1}
                                     margin="normal" required
                                     inputProps={{
@@ -691,9 +745,11 @@ function Dashboard() {
                                     }}
 
                                 />
-                                <small> {formDataError1.email && <span className="text-danger">{formDataError1.email}</span>}</small>
+                                {/* <small> {formDataError1.email && <span className="text-danger">{formDataError1.email}</span>}</small> */}
                                 <TextField
                                     fullWidth label="Counter Name" name="counterName"
+                                    error={formDataError1.counterName}
+                                    helperText={formDataError1.counterName}
                                     value={formData1.counterName} onChange={handleChange1}
                                     margin="normal" required
                                     onKeyPress={(e) => {
@@ -707,7 +763,7 @@ function Dashboard() {
                                         maxLength: 60, // Restrict input length
                                     }}
                                 />
-                                <small> {formDataError1.counterName && <span className="text-danger">{formDataError1.counterName}</span>}</small>
+                                {/* <small> {formDataError1.counterName && <span className="text-danger">{formDataError1.counterName}</span>}</small> */}
 
 
 

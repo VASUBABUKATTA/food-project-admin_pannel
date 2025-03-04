@@ -95,11 +95,11 @@ function NewMenuItems({ counterId,counterName }) {
 
 
     const columns = [
-        { name: "ID", selector: (row) => row.id, sortable: true, width: "70px" },
+        { name: "ID", selector: (row,index) => index+1, sortable: true, width: "70px" },
         { name: "Item Name", selector: (row) => row.name, sortable: true },
         {
             name: "Available", selector: (row) => <Badge bg={row.available === 1 ? "success" : "danger"} className="p-2">
-                {row.available === 1 ? "Open" : "Closed"}
+                {row.available === 1 ? "Yes" : "No"}
             </Badge>, sortable: true
         },
         { name: "Price", selector: (row) => row.price, sortable: true, width: "120px" },
@@ -167,6 +167,7 @@ function NewMenuItems({ counterId,counterName }) {
     };
 
     const handleClickGoBack = () => {
+        setSearchText('');
         setCategoriesTable(false);
         setOpen(true);
     }

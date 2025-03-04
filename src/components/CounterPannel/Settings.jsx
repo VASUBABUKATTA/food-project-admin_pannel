@@ -296,6 +296,7 @@ const handleChange = async (counter) => {
 
     {/* Card Body - Centered Image */}
     <div className="card-body border p-3 d-flex flex-column align-items-center justify-content-center shadow-sm" style={{backgroundColor:'aliceblue'}}>
+   
         <div
             className="rounded-circle"
             style={{

@@ -24,6 +24,7 @@ import CounterRegistrationApis from '../Api_Services/CounterRegistrationApis';
 import DataTable from 'react-data-table-component';
 import { Badge } from 'react-bootstrap';
 import { toast } from 'react-toastify';
+import { confirmAlert } from 'react-confirm-alert';
 
 // const menu = [
 //   {
@@ -163,7 +164,7 @@ function LongMenu() {
   );
 }
 
-const MenuItems = ({ menuitem, getCategories,goBack,counter_id }) => {
+const MenuItems = ({ menuitem, getCategories, goBack, counter_id }) => {
   // console.log(menuitem);
 
   const [menuitems, setMenuItems] = useState(menuitem)
@@ -176,7 +177,7 @@ const MenuItems = ({ menuitem, getCategories,goBack,counter_id }) => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [searchText, setSearchText] = useState(""); // Search text
-  
+
   useEffect(() => {
     setFilteredMenuItems(menuitems.menu || []);
   }, [menuitems]);
@@ -209,24 +210,45 @@ const MenuItems = ({ menuitem, getCategories,goBack,counter_id }) => {
     // console.log(itemId, status);
 
     const available = !status;
-    try {
-      const response = await Service.put("/menuitem/updateItemStatus", { itemId, available });
-      // console.log(response);
 
-      if (response.status == 201) {
-        const data = await getCategories(counter_id);
-        toast.success("Item Details Were Updated Successfully")
-        // console.log(menuitems.name);
-        // console.log(data);
-        data.map((item, index) => (
-          item.categoryId === menuitems.categoryId ? setMenuItems(item) : ''
-        ))
-      }
-    } catch (error) {
-      toast.warn(error.response.data.message);
-      // console.error(error);
 
-    }
+    confirmAlert({
+      title: 'Conform Update',
+      message: `Are You Sure You want to Update the Availability Status --${status == 1 ? "Yes" : "No"} to ${status == 1 ? "No" : "Yes"}--? `,
+      buttons: [
+        {
+          label: 'Ok',
+          onClick: async () => {
+            try {
+              const response = await Service.put("/menuitem/updateItemStatus", { itemId, available });
+              // console.log(response);
+
+              if (response.status == 201) {
+                const data = await getCategories(counter_id);
+                toast.success("Item Details Were Updated Successfully")
+                // console.log(menuitems.name);
+                // console.log(data);
+                data.map((item, index) => (
+                  item.categoryId === menuitems.categoryId ? setMenuItems(item) : ''
+                ))
+              }
+            } catch (error) {
+              toast.warn(error.response.data.message);
+              // console.error(error);
+
+            }
+
+
+          }
+        }, {
+          label: "cancel",
+          onClick: () => {
+
+          }
+        }
+      ]
+    })
+
 
 
 
@@ -237,14 +259,14 @@ const MenuItems = ({ menuitem, getCategories,goBack,counter_id }) => {
   };
 
 
-  
+
   const columns = [
-    { name: "ID", selector: (row) => row.itemId, sortable: true, width: "70px" },
+    { name: "ID", selector: (row,index) => index+1, sortable: true, width: "70px" },
     { name: "Item Name", selector: (row) => row.name, sortable: true },
     {
-        name: "Available", selector: (row) => <Badge bg={row.itemAvailability === 1 ? "success" : "danger"} className="p-2">
-            {row.available === 1 ? "Open" : "Closed"}
-        </Badge>, sortable: true
+      name: "Available", selector: (row) => <Badge bg={row.itemAvailability === 1 ? "success" : "danger"} className="p-2">
+        {row.itemAvailability === 1 ? "Yes" : "No"}
+      </Badge>, sortable: true
     },
     { name: "Price", selector: (row) => row.price, sortable: true, width: "120px" },
     {
@@ -260,38 +282,38 @@ const MenuItems = ({ menuitem, getCategories,goBack,counter_id }) => {
       ),
       width: "120px",
     },
-];
+  ];
 
-const customStyles = {
+  const customStyles = {
     headRow: {
-        style: {
-            backgroundColor: 'darkblue',
-            fontSize: '14px',
-            fontWeight: 'bold',
-        },
+      style: {
+        backgroundColor: 'darkblue',
+        fontSize: '14px',
+        fontWeight: 'bold',
+      },
     },
     headCells: {
-        style: {
-            color: 'white',
-            fontWeight: 'bold',
-        },
+      style: {
+        color: 'white',
+        fontWeight: 'bold',
+      },
     },
     rows: {
-        style: {
-            fontSize: '13px',
-        },
+      style: {
+        fontSize: '13px',
+      },
     },
     pagination: {
-        style: {
-            backgroundColor: 'aliceblue',
-            color: 'black',
-            fontSize: '13px',
-            fontWeight: 'bold',
-        },
+      style: {
+        backgroundColor: 'aliceblue',
+        color: 'black',
+        fontSize: '13px',
+        fontWeight: 'bold',
+      },
     },
-};
+  };
 
-  
+
 
 
   return (
@@ -299,12 +321,12 @@ const customStyles = {
 
       {
         menuitems.menu.length > 0 ? (<>
-          <div className='d-flex'>
-            <ArrowBackIosTwoTone
+          <div className='d-flex fw-bold fs-4'>
+
+            <h2 className='fw-bold fs-3 text-primary'>   <ArrowBackIosTwoTone
               onClick={goBack}
-              style={{ fontSize: 40, color: "dark", cursor: "pointer", fontWeight: "bold", }}
-            />
-            <h2> Items for {menuitems.name}</h2>
+              sx={{ color: "dark", cursor: "pointer", fontWeight: "bold", fontSize: '25px' }}
+            /> Items for {menuitems.name}</h2>
           </div>
 
 
@@ -377,14 +399,14 @@ const customStyles = {
             />
           </TableContainer> */}
 
-<TextField
-                        type="text"
-                        placeholder="🔍 Search Item Name..."
-                        value={searchText}
-                        onChange={handleSearch}
-                        className="search-input mb-3"
-                    />
- <DataTable
+          <TextField
+            type="text"
+            placeholder="🔍 Search Item Name..."
+            value={searchText}
+            onChange={handleSearch}
+            className="search-input mb-3"
+          />
+          <DataTable
             columns={columns}
             data={filteredMenuItems}
             defaultSortField="name"
@@ -470,20 +492,40 @@ function Availability() {
 
     // console.log(available);
 
-    try {
-      const res = await Service.put("/menuItem/updateCategoryStatus", { available, categoryId });
-      // console.log(res);
 
-      if (res.status == 201) {
-        // console.log(res);
-        toast.success("Item Details Were Updated Successfully")
-        getCategories(counter_id);
-      }
-    } catch (error) {
-      // console.log(error);
-      toast.warn(error.response.status.data.message)
+    confirmAlert({
+      title: 'Conform Update',
+      message: `Are You Sure You want to Update the Availability Status --${status == 1 ? "Yes" : "No"} to ${status == 1 ? "No" : "Yes"}--? `,
+      buttons: [
+        {
+          label: 'Ok',
+          onClick: async () => {
+            try {
+              const res = await Service.put("/menuItem/updateCategoryStatus", { available, categoryId });
+              // console.log(res);
 
-    }
+              if (res.status == 201) {
+                // console.log(res);
+                toast.success("Item Details Were Updated Successfully")
+                getCategories(counter_id);
+              }
+            } catch (error) {
+              // console.log(error);
+              toast.warn(error.response.status.data.message)
+
+            }
+
+          }
+        }, {
+          label: "Cancel",
+          onClick: () => {
+
+          }
+        }
+      ]
+    })
+
+
 
     setDisabledCards((prev) => ({
       ...prev,
@@ -493,7 +535,7 @@ function Availability() {
 
   };
 
-  const goBack=()=>{
+  const goBack = () => {
     setShowMenuItems(false);
   }
 
@@ -508,7 +550,7 @@ function Availability() {
 
           return ( // RETURN the JSX inside parentheses
             <div className="col-lg-4 col-md-6 col-sm-12" key={item.categoryId}>
-              <div className="card text-center" style={{ cursor: "pointer",backgroundColor:"aliceblue", border:"2px solid black",opacity: item.categoryAvailability ? 1 : 0.5 }}>
+              <div className="card text-center" style={{ cursor: "pointer", backgroundColor: "aliceblue", border: "2px solid black", opacity: item.categoryAvailability ? 1 : 0.5 }}>
                 {/* Disable Button */}
                 <IconButton
                   color="secondary"

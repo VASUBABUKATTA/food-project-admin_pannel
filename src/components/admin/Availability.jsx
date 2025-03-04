@@ -9,7 +9,7 @@ import DataTable from 'react-data-table-component'
 import {Badge} from 'react-bootstrap';
 import { toast } from 'react-toastify';
 
-
+import { confirmAlert } from "react-confirm-alert";
 
 function Availability() {
     const [counters, setCounters] = useState([]);
@@ -35,39 +35,71 @@ function Availability() {
     }, []);
 
    
-    const handleChange = async (counter) => {
+    // const handleChange = async (counter) => {
        
-        const id = counter.ID;
-        const availability = counter.AVAILABLE == 1 ? 0 : 1; 
+    //     const id = counter.ID;
+    //     const availability = counter.AVAILABLE == 1 ? 0 : 1; 
 
-        console.log(counter,id,availability);
+    //     console.log(counter,id,availability);
         
 
-        try {
-            const response = await CounterRegistrationApis.registerCounterUpdateForAvailability(id, availability);
-            console.log(response);
+    //     try {
+    //         const response = await CounterRegistrationApis.registerCounterUpdateForAvailability(id, availability);
+    //         console.log(response);
 
-            if (response.status === 201) {
-                // alert(response.data.message);
-                 toast.success("Counter Details Updated Successfully", {
-                                      position: "top-right",
-                                      autoClose: 5000, // Closes after 3 seconds
-                                      hideProgressBar: false,
-                                      closeOnClick: true,
-                                      pauseOnHover: true,
-                                      draggable: true,
-                                      progress: undefined,
-                                      theme: "light",
-                                    });
-                fetchData();
-            } else {
-                throw new Error("Failed to update availability");
-            }
-        } catch (error) {
-            alert("Error: " + (error.response?.data?.message || "API call failed"));
+    //         if (response.status === 201) {
+    //             // alert(response.data.message);
+    //              toast.success("Counter Details Updated Successfully", {
+    //                                   position: "top-right",
+    //                                   autoClose: 5000, // Closes after 3 seconds
+    //                                   hideProgressBar: false,
+    //                                   closeOnClick: true,
+    //                                   pauseOnHover: true,
+    //                                   draggable: true,
+    //                                   progress: undefined,
+    //                                   theme: "light",
+    //                                 });
+    //             fetchData();
+    //         } else {
+    //             throw new Error("Failed to update availability");
+    //         }
+    //     } catch (error) {
+    //         alert("Error: " + (error.response?.data?.message || "API call failed"));
             
-        }
-    };
+    //     }
+    // };
+
+    const handleChange = async (counter) => {
+        confirmAlert({
+          title: "Confirm Update",
+          message: `Do you want to update the counter availability Status -- ${counter.AVAILABLE == 1 ? "Opne" : "Close"} to -- ${counter.AVAILABLE == 1 ? "Close" : "Open"} ` ,
+          buttons: [
+            {
+              label: "Ok",
+              onClick: async () => {
+                try {
+                  const id = counter.ID;
+                  const availability = counter.AVAILABLE == 1 ? 0 : 1;
+                  const response = await CounterRegistrationApis.registerCounterUpdateForAvailability(id, availability);
+      
+                  if (response.status === 201) {
+                    toast.success("Counter Details Updated Successfully", { position: "top-right", autoClose: 5000 });
+                    fetchData();
+                  } else {
+                    throw new Error("Failed to update availability");
+                  }
+                } catch (error) {
+                  toast.error("Error: " + (error.response?.data?.message || "API call failed"));
+                }
+              }
+            },
+            {
+              label: "Cancel",
+              onClick: () => {}
+            }
+          ]
+        });
+      };
 
  const handleSearch = (event) => {
     const searchValue = event.target.value.toLowerCase();
@@ -154,6 +186,9 @@ const tableStyles = {
         marginBottom: "10px",
     },
 };
+
+
+
 
     return (
         <Container className="mt-4">

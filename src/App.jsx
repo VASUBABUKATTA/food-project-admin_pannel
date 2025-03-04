@@ -17,6 +17,7 @@ import Dashboard1 from './components/CounterPannel/Dashboard';
 import Menu from './components/CounterPannel/MenuItems';
 import Availability1 from './components/CounterPannel/Availability';
 import CounterMenuItems from './components/CounterPannel/CounterMenuItems';
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 function App() {
   return (

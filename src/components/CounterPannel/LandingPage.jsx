@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -24,6 +24,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import CounterMenuItems from './CounterMenuItems';
 import { Logout } from '@mui/icons-material';
 import { toast } from 'react-toastify';
+import { confirmAlert } from 'react-confirm-alert';
 
 const NAVIGATION = [
     {
@@ -123,29 +124,76 @@ const demoTheme = createTheme({
 function DemoPageContent({ pathname }) {
 
     
+      const [pathname1,setPathName1]=useState('');
+    
   const navigate = useNavigate();
-  if (pathname == '/CounterPannel/Login') {
-    toast.success("Logout Successfull!", {
-      position: "top-right",
-      autoClose: 5000, // Closes after 3 seconds
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-    navigate('/CounterPannel/Login')
-  }
+  // if (pathname == '/CounterPannel/Login') {
+  //   toast.success("Logout Successfull!", {
+  //     position: "top-right",
+  //     autoClose: 5000, // Closes after 3 seconds
+  //     hideProgressBar: false,
+  //     closeOnClick: true,
+  //     pauseOnHover: true,
+  //     draggable: true,
+  //     progress: undefined,
+  //     theme: "light",
+  //   });
+  //   navigate('/CounterPannel/Login')
+  // }
 
+useEffect(() => {
+  console.log(pathname);
+  
+    if (pathname === "/CounterPannel/Login") {
+      confirmAlert({
+        title: "Confirm Logout",
+        message: "Are you sure you want to log out from the application?",
+        buttons: [
+          {
+            label: "Ok",
+            onClick: () => {
+              
+              navigate('/CounterPannel/Login'); // Redirect after logout
+              
+              toast.success("Logout Successful!", {
+                position: "top-right",
+                autoClose: 3000, // Closes after 3 seconds
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
+
+              // Perform logout logic (clear local storage, session, etc.)
+              localStorage.clear();
+              sessionStorage.clear();
+              
+            }
+          },
+          {
+            label: "Cancel",
+            onClick: () => {
+              setPathName1(pathname1);
+              
+            }
+          }
+        ]
+      });
+    }
+    else{
+      setPathName1(pathname)
+    }
+  }, [pathname]);
 
   return (
     <Box className='p-3'>
        
-          {pathname == "/dashboard" ? (<> <Dashboard/> </>) : (<></>)}
-          {pathname == "/menu" ? (<> <CounterMenuItems/></>) : (<></>)}
-          {pathname == "/menuAvailability" ? (<> <Availability/></>) : (<></>)}
-          {pathname == "/settings" ? (<> <Settings/> </>) : (<></>)}
+          {pathname1 == "/dashboard" ? (<> <Dashboard/> </>) : (<></>)}
+          {pathname1 == "/menu" ? (<> <CounterMenuItems/></>) : (<></>)}
+          {pathname1 == "/menuAvailability" ? (<> <Availability/></>) : (<></>)}
+          {pathname1 == "/settings" ? (<> <Settings/> </>) : (<></>)}
 
        
         </Box>
