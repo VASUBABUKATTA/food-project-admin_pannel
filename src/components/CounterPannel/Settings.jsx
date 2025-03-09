@@ -4,6 +4,7 @@ import { Button, TextField, Typography } from '@mui/material';
 import { Accessibility, AccountCircle, CalendarMonth, CurrencyRupee, Edit, Email, LocalMall, Phone, Storefront } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 import Modal from 'react-bootstrap/Modal';
+import { confirmAlert } from 'react-confirm-alert';
 
 function Settings() {
 
@@ -247,39 +248,83 @@ const handleChange = async (counter) => {
 
     // console.log(counter,id,availability);
     
-
-    try {
-        const response = await CounterRegistrationApis.registerCounterUpdateForAvailability(id, availability);
-        // console.log(response);
-
-        if (response.status === 201) {
-            // alert(response.data.message);
-             toast.success("Counter Details Updated Successfully", {
-                                  position: "top-right",
-                                  autoClose: 5000, // Closes after 3 seconds
-                                  hideProgressBar: false,
-                                  closeOnClick: true,
-                                  pauseOnHover: true,
-                                  draggable: true,
-                                  progress: undefined,
-                                  theme: "light",
-                                });
-                                fetchCounterId()
-           
-        } else {
-            throw new Error("Failed to update availability");
-        }
-    } catch (error) {
-        alert("Error: " + (error.response?.data?.message || "API call failed"));
-        
-    }
+    confirmAlert({
+        title: 'Conform Update',
+        message: `Are You Sure You want to Update the Counter Availability Status --${availability == 1 ? "Closed" : "Open"} to ${availability== 1 ? "Open" : "Close"}--? `,
+        buttons: [
+          {
+            label: 'Ok',
+            onClick: async () => {
+                try {
+                    const response = await CounterRegistrationApis.registerCounterUpdateForAvailability(id, availability);
+                    // console.log(response);
+            
+                    if (response.status === 201) {
+                        // alert(response.data.message);
+                         toast.success("Counter Details Updated Successfully", {
+                                              position: "top-right",
+                                              autoClose: 5000, // Closes after 3 seconds
+                                              hideProgressBar: false,
+                                              closeOnClick: true,
+                                              pauseOnHover: true,
+                                              draggable: true,
+                                              progress: undefined,
+                                              theme: "light",
+                                            });
+                                            fetchCounterId()
+                       
+                    } else {
+                        throw new Error("Failed to update availability");
+                    }
+                } catch (error) {
+                    toast.error("Error: " + (error.response?.data?.message || "API call failed"));
+                    
+                }
+  
+            }
+          }, {
+            label: "Cancel",
+            onClick: () => {
+  
+            }
+          }
+        ]
+      })
+  
+  
 };
 
+const handleDownload = async () => {
+    try {
+
+      const counterId = counterDetails.ID;
+
+      const response = await fetch(`http://localhost:9090/order/download-history/${counterId}`, {
+        method: "GET",
+      });
+
+      if (!response.ok) throw new Error("Failed to download file");
+
+      // Create a Blob from the response
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+
+      // Create a link element and trigger download
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `OrderHistory_Counter_${counterId}.xlsx`; // Set file name
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error("Error downloading file:", error);
+    }
+  };
 
   return (
     <>
  
-
+ {/* <button onClick={handleDownload}>Download History</button> */}
 
 
 <>
@@ -451,7 +496,7 @@ const handleChange = async (counter) => {
                     </div>
                 </div>
             </div>
-            <div className="col-12 col-md-6">
+            {/* <div className="col-12 col-md-6">
                 <div className="p-1">
 
                     <div className="form-group d-flex text-center align-items-center justify-content-center gap-2 mt-1">
@@ -472,8 +517,8 @@ const handleChange = async (counter) => {
                         />
                     </div>
                 </div>
-            </div>
-            <div className="col-12 col-md-6">
+            </div> */}
+            {/* <div className="col-12 col-md-6">
                 <div className="p-1">
 
                     <div className="form-group d-flex text-center align-items-center justify-content-center gap-2 mt-1">
@@ -494,7 +539,7 @@ const handleChange = async (counter) => {
                         />
                     </div>
                 </div>
-            </div>
+            </div> */}
         </div>
     </div>
 </div>
@@ -505,7 +550,7 @@ const handleChange = async (counter) => {
 
                 {showUpdateCounter ? (<>
                     {/* Modal for Adding Counter */}
-                    <Modal show={showUpdateCounter} onHide={handleClose1} style={{ marginTop: '35px' }} backdrop="static" keyboard={false}>
+                    <Modal show={showUpdateCounter} onHide={handleClose1} style={{ marginTop: '100px' }} backdrop="static" keyboard={false}>
 
                         <Modal.Body>
                             <Typography variant="body2" sx={{ mt: 1, textAlign: 'center', fontWeight: "bold", fontSize: '20px' }}>

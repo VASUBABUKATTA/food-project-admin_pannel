@@ -261,26 +261,45 @@ const MenuItems = ({ menuitem, getCategories, goBack, counter_id }) => {
 
 
   const columns = [
-    { name: "ID", selector: (row,index) => index+1, sortable: true, width: "70px" },
-    { name: "Item Name", selector: (row) => row.name, sortable: true },
-    {
-      name: "Available", selector: (row) => <Badge bg={row.itemAvailability === 1 ? "success" : "danger"} className="p-2">
-        {row.itemAvailability === 1 ? "Yes" : "No"}
-      </Badge>, sortable: true
-    },
-    { name: "Price", selector: (row) => row.price, sortable: true, width: "120px" },
+    { name: "ID", selector: (row, index) => index + 1, sortable: true, },
+    { name: "Item Name", selector: (row) => row.name, sortable: true, },
+    // {
+    //   name: "Available", selector: (row) => <Badge bg={row.itemAvailability === 1 ? "success" : "danger"} className="p-2">
+    //     {row.itemAvailability === 1 ? "Yes" : "No"}
+    //   </Badge>, sortable: true
+    // },
+    { name: "Price", selector: (row) => row.price, sortable: true, },
+
     {
       name: "Actions",
       selector: (row) => (
         <IconButton
           color="secondary"
           onClick={() => handleDisable(row.itemId, row.itemAvailability)}
-          sx={{ color: row.itemAvailability === 1 ? "green" : "red" }}
+          sx={{
+            color: row.itemAvailability === 1 ? "green" : "red",
+            opacity: row.itemAvailability ? 1 : 0.5,
+            // cursor: row.itemAvailability ? "pointer" : "not-allowed" 
+          }}
+        // disabled={!row.itemAvailability} // Optional: Disables button if not available
         >
           <Block />
         </IconButton>
       ),
       width: "120px",
+    }
+
+  ];
+
+  const conditionalRowStyles = [
+    {
+      when: (row) => row.itemAvailability === 0, // Condition for disabling
+      style: {
+        backgroundColor: "#f0f0f0", // Gray background for disabled rows
+        color: "#a0a0a0", // Light gray text
+        // pointerEvents: "none", // Prevent clicks
+        opacity: 0.6, // Reduce visibility
+      },
     },
   ];
 
@@ -409,6 +428,7 @@ const MenuItems = ({ menuitem, getCategories, goBack, counter_id }) => {
           <DataTable
             columns={columns}
             data={filteredMenuItems}
+            conditionalRowStyles={conditionalRowStyles}
             defaultSortField="name"
             pagination
             highlightOnHover
@@ -541,6 +561,68 @@ function Availability() {
 
   if (showMenuItems)
     return <MenuItems menuitem={menuitems} getCategories={getCategories} goBack={goBack} counter_id={counter_id} />
+
+
+  const cardStyle = {
+    position: "relative",
+    width: "300px",
+    transition: "transform 0.3s ease, box-shadow 0.3s ease",
+    cursor: "pointer",
+    border: "2px solid black",
+    backgroundColor: "aliceblue",
+    overflow: "hidden",
+    textAlign: "center",
+    margin: "20px auto",
+    borderRadius: "8px",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)"
+  };
+
+  const verticalRibbonContainer = {
+    position: "absolute",
+    top: 0,
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    justifyContent: "center",
+    zIndex: 0
+  };
+
+  const ribbonStyle = (color) => ({
+    width: "20px",
+    height: "100%",
+    margin: "0 3px",
+    background: color,
+    clipPath: "polygon(50% 0%, 100% 0, 100% 85%, 50% 100%, 0 85%, 0 0)"
+  });
+
+  const horizontalRibbon = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    background: "white",
+    padding: "10px 25px",
+    fontWeight: "bold",
+    fontFamily: "Arial, sans-serif",
+    fontSize: "18px",
+    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+    borderRadius: "4px",
+    zIndex: 1,
+    color: "darkblue",
+    border: "2px solid darkblue"
+  };
+
+  const cardFooter = {
+    backgroundColor: "darkblue",
+    color: "white",
+    borderTopLeftRadius: "0px",
+    borderTopRightRadius: "0px",
+    padding: "10px",
+    textAlign: "center",
+    zIndex: 2,
+    position: "relative"
+  };
+
   return (
     <>
       <h3 className='text-start m-3'>Menu Availability Categorys </h3>
@@ -549,26 +631,40 @@ function Availability() {
           const isDisabled = disabledCards[item.categoryId] || false; // Check if the card is disabled
 
           return ( // RETURN the JSX inside parentheses
-            <div className="col-lg-4 col-md-6 col-sm-12" key={item.categoryId}>
-              <div className="card text-center" style={{ cursor: "pointer", backgroundColor: "aliceblue", border: "2px solid black", opacity: item.categoryAvailability ? 1 : 0.5 }}>
-                {/* Disable Button */}
+            <div className="col-12 col-md-6 col-lg-6 col-xl-4" key={item.categoryId}>
+              <div className="card text-center" style={{ cursor: "pointer", backgroundColor: "aliceblue", border: "2px solid black",cardStyle, opacity: item.categoryAvailability ? 1 : 0.5 }}>
+                
                 <IconButton
                   color="secondary"
                   onClick={() => handleDisableCard(item.categoryId, item.categoryAvailability)}
                   // sx={{ color: isDisabled ? "green" : "red", position: "absolute", top: 10, right: 10 }}
-                  sx={{ color: item.categoryAvailability ? "green" : "red", position: "absolute", top: 10, right: 10 }}
+                  sx={{ color: item.categoryAvailability ? "green" : "red", position: "absolute", top: 10, right: 10 ,zIndex:2}}
                 >
                   <Block />
                 </IconButton>
 
-                {/* Card Content */}
+                <div style={{ position: "absolute", top: 0, width: "100%", height: "100%", display: "flex", justifyContent: "center", zIndex: 0 }}>
+                                        <div style={{ width: "20px", height: "100%", margin: "0 3px", background: "#3B5998" }}></div> {/* Dark Blue */}
+                                        <div style={{ width: "20px", height: "100%", margin: "0 3px", background: "#6A89CC" }}></div> {/* Light Blue */}
+                                        <div style={{ width: "20px", height: "100%", margin: "0 3px", background: "#D9E4FC" }}></div> {/* Very Light Blue */}
+                                    </div>
                 <div
-                  className="card-body p-5"
-                  onClick={!isDisabled ? () => handleCardClick(item) : undefined}
+                  className="card-body p-5 mb-4" 
+                  // onClick={!isDisabled ? () => handleCardClick(item) : undefined}
+                  onClick={item.categoryAvailability ? () => handleCardClick(item) : undefined}
                   style={{ cursor: item.categoryAvailability ? "pointer" : "not-allowed" }} // Disable clicks when disabled
                 >
-                  <h5 className='fw-bold fs-3'>{item.name}</h5>
+                  {/* <h5 className='fw-bold fs-3'>{item.name}</h5> */}
                 </div>
+                <div style={horizontalRibbon}>Food</div>
+               
+                 
+                <div style={cardFooter}  onClick={item.categoryAvailability ? () => handleCardClick(item) : undefined}>
+                                        <h5 className='fw-bold fs-3 '>{item.name}</h5>
+                                    </div>
+              
+
+
               </div>
             </div>
           );

@@ -18,6 +18,8 @@ import Menu from './components/CounterPannel/MenuItems';
 import Availability1 from './components/CounterPannel/Availability';
 import CounterMenuItems from './components/CounterPannel/CounterMenuItems';
 import "react-confirm-alert/src/react-confirm-alert.css";
+import QrCode from './components/userPannel/QrCode';
+import UserDashboard from './components/userPannel/UserDashboard';
 
 function App() {
   return (
@@ -35,20 +37,21 @@ function App() {
           <Route path="settingsPannel" element={<MenuItems />} />
         </Route>
 
-
         {/* CounterPannel Routes */}
-        <Route path='/CounterPannel/MenuItems' element={<LandingPage />} />
-        <Route path='/dashboard' element={<Dashboard1 />} />
-        {/* <Route path='/menu' element={<Menu />} /> */}
-        <Route path='/menuAvailability' element={<Availability1 />} />
-        <Route path='/menu' element={<CounterMenuItems />} />
-        <Route path="/settings" element={<Settings />} />
+        <Route path='/CounterPannel/MenuItems' element={<LandingPage />} >
+          <Route index element={<LandingPage />} />
+          <Route path='dashboard' element={<Dashboard1 />} />
+          <Route path='menuAvailability' element={<Availability1 />} />
+          <Route path='menu' element={<CounterMenuItems />} />
+          <Route path="settings" element={<Settings />} />
+       </Route>
 
 
 
         {/* User Pannel Routes */}
-        <Route path='/userPannel' element={<UserHomePage />} />
+        <Route path='/userPannel' element={<UserDashboard />} />
         <Route path='/CounterPannel/Login' element={<CounterPanelLogin />} />
+        <Route path='/userPannel/QRCode' element={<QrCode />} />
         {/* <Route path='/CounterPannel/MenuItems' element={<Menu />} /> */}
 
       </Routes>

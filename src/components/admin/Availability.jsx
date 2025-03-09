@@ -72,7 +72,7 @@ function Availability() {
     const handleChange = async (counter) => {
         confirmAlert({
           title: "Confirm Update",
-          message: `Do you want to update the counter availability Status -- ${counter.AVAILABLE == 1 ? "Opne" : "Close"} to -- ${counter.AVAILABLE == 1 ? "Close" : "Open"} ` ,
+          message: `Do you want to update the counter availability Status -- ${counter.AVAILABLE == 1 ? "Open" : "Close"} to -- ${counter.AVAILABLE == 1 ? "Close" : "Open"} ` ,
           buttons: [
             {
               label: "Ok",

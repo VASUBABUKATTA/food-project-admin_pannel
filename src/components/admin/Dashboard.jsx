@@ -16,7 +16,10 @@ import { Accessibility, AccountCircle, ArrowBackIosTwoTone, CalendarMonth, Curre
 import { toast } from 'react-toastify';
 import { confirmAlert } from 'react-confirm-alert';
 
+
 function Dashboard() {
+    const API_BASE_URL = import.meta.env.VITE_BASE_URL;
+
     const [tab, setTab] = useState("cards");
     const [showUpdateCounter, setShowUpdateCounter] = useState(false);
     const navigate = useNavigate();
@@ -218,7 +221,7 @@ function Dashboard() {
 
     useEffect(() => {
         fetchData();
-    }, []);
+    },);
 
 
 
@@ -535,7 +538,7 @@ function Dashboard() {
                                             style={{
                                                 height: '200px',
                                                 width: '100%',
-                                                backgroundImage: counter.IMAGEPATH ? `url(http://localhost:9090${counter.IMAGEPATH})` : 'none',
+                                                backgroundImage: counter.IMAGEPATH ? `url(${API_BASE_URL}${counter.IMAGEPATH})` : 'none',
                                                 backgroundSize: 'cover',
                                                 borderRadius: '5px 5px 0 0'
                                             }}
@@ -834,7 +837,7 @@ function Dashboard() {
                                 style={{
                                     height: '200px',
                                     width: '200px',
-                                    backgroundImage: counterDetails.IMAGEPATH ? `url(http://localhost:9090${counterDetails.IMAGEPATH})` : 'none',
+                                    backgroundImage: counterDetails.IMAGEPATH ? `url(${API_BASE_URL}${counterDetails.IMAGEPATH})` : 'none',
                                     backgroundSize: 'cover',
                                     backgroundPosition: 'center',
                                     border: '2px solid #ccc',

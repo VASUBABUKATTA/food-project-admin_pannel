@@ -31,7 +31,7 @@ import TablePagination from '@mui/material/TablePagination';
 import DataTable from 'react-data-table-component';
 import { toast } from 'react-toastify';
 
-function NewMenuItems({ counterId,counterName }) {
+function NewMenuItems({ counterId, counterName }) {
 
     const [categoryList, setCategoryList] = useState([])
     const [filteredMenuItems, setFilteredMenuItems] = useState([]);
@@ -44,7 +44,7 @@ function NewMenuItems({ counterId,counterName }) {
         try {
             const response = await Service.get(`/menuItem/getCategory/ByCounterId/${counterId}`);
             if (response.status == 200) {
-               
+
                 //  toast.success("Categories Fetched Successfully!", {
                 //       position: "top-right",
                 //       autoClose: 5000, // Closes after 3 seconds
@@ -55,7 +55,7 @@ function NewMenuItems({ counterId,counterName }) {
                 //       progress: undefined,
                 //       theme: "light",
                 //     });
-                
+
                 setCategoriesTable(false)
                 setOpen(true);
                 setCategoryList(response.data)
@@ -63,7 +63,7 @@ function NewMenuItems({ counterId,counterName }) {
                 return response.data;
             }
         } catch (error) {
-          
+
             setCategoryList([])
             // toast.error("Categories were Not There!", {
             //     position: "top-right",
@@ -88,14 +88,14 @@ function NewMenuItems({ counterId,counterName }) {
 
 
 
-// console.log(counterName);
+    // console.log(counterName);
 
 
 
 
 
     const columns = [
-        { name: "ID", selector: (row,index) => index+1, sortable: true, width: "70px" },
+        { name: "ID", selector: (row, index) => index + 1, sortable: true, width: "70px" },
         { name: "Item Name", selector: (row) => row.name, sortable: true },
         {
             name: "Available", selector: (row) => <Badge bg={row.available === 1 ? "success" : "danger"} className="p-2">
@@ -171,43 +171,103 @@ function NewMenuItems({ counterId,counterName }) {
         setCategoriesTable(false);
         setOpen(true);
     }
+
+    const cardStyle = {
+        position: "relative",
+        // width: "250px",
+        transition: "transform 0.3s ease, box-shadow 0.3s ease",
+        cursor: "pointer",
+        border: "2px solid black",
+        backgroundColor: "aliceblue",
+        overflow: "hidden",
+        textAlign: "center",
+        margin: "20px auto",
+        borderRadius: "8px",
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)"
+    };
+
+    const verticalRibbonContainer = {
+        position: "absolute",
+        top: 0,
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        zIndex: 0
+    };
+
+    const ribbonStyle = (color) => ({
+        width: "20px",
+        height: "100%",
+        margin: "0 3px",
+        background: color,
+        clipPath: "polygon(50% 0%, 100% 0, 100% 85%, 50% 100%, 0 85%, 0 0)"
+    });
+
+    const horizontalRibbon = {
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        background: "white",
+        padding: "10px 25px",
+        fontWeight: "bold",
+        fontFamily: "Arial, sans-serif",
+        fontSize: "18px",
+        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+        borderRadius: "4px",
+        zIndex: 1,
+        color: "darkblue",
+        border: "2px solid darkblue"
+    };
+
+    const cardFooter = {
+        backgroundColor: "darkblue",
+        color: "white",
+        borderTopLeftRadius: "0px",
+        borderTopRightRadius: "0px",
+        padding: "10px",
+        textAlign: "center",
+        zIndex: 2,
+        position: "relative"
+    };
+
     return (
         <div>
             <h3 className="text-start m-1   fw-bold fs-3"><span >Counter Name :</span><span className='text-primary ms-2'>{counterName}</span> </h3>
             {open && categoryList.length > 0 ? (
                 <div>
-                   
+
                     <h3 className="text-start ms-2   text-primary fw-bold fs-3">Categories</h3>
-                    <div className="row px-3">
+                    <div className="row p-2">
                         {categoryList.map((item, index) => (
-                            <div key={index} className="col-12 col-md-6 col-lg-4 col-sm-3">
-                                <div
-                                    className="card rounded  text-center mt-3 "
-                                    style={{
-                                        width: "100%",
-                                        transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                                        cursor: "pointer",
-                                        border:'2px solid black',
-                                        backgroundColor:'aliceblue'
-                                    }}
+                            <div key={index} className="col-12 col-md-6 col-lg-6 col-xl-4">
+                                <div className='card '
+                                    style={cardStyle}
                                     onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.05)"}
                                     onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1.0)"}
-                                    onClick={() => { handleClick(item.id) }}
+                                    onClick={() => handleClick(item.id)}
                                 >
-
-                                    <div className="card-body p-5 ">
-                                        <h5 className='fw-bold fs-3'>{item.name.toUpperCase()}</h5>
+                                    <div style={verticalRibbonContainer}>
+                                        <div style={ribbonStyle("#2a4d7f")}></div>
+                                        <div style={ribbonStyle("#4f7cbf")}></div>
+                                        <div style={ribbonStyle("#d9e4f5")}></div>
+                                    </div>
+                                    <div style={horizontalRibbon}>Food</div>
+                                    <div className="card-body mb-4" style={{ padding: "40px" }}></div>
+                                    <div style={cardFooter}>
+                                        <h5 style={{ fontWeight: "bold", fontSize: "20px" }}>{item.name.toUpperCase()}</h5>
                                     </div>
                                 </div>
                             </div>
                         ))}
                     </div>
                 </div>
-            ):(<>{!CategoriesTable && ( <>
-             {/* <h3 className="text-start m-3   fw-bold fs-3"><span >Counter Name :</span><span className='text-primary ms-2'>{counterName}</span> </h3> */}
-                 
-            <div className='text-center text-primary mt-3 fw-bold fs-3'> Categories Are Not Available in this Counter </div></>)}
-           </>)}
+            ) : (<>{!CategoriesTable && (<>
+                {/* <h3 className="text-start m-3   fw-bold fs-3"><span >Counter Name :</span><span className='text-primary ms-2'>{counterName}</span> </h3> */}
+
+                <div className='text-center text-primary mt-3 fw-bold fs-3'> Categories Are Not Available in this Counter </div></>)}
+            </>)}
 
             {CategoriesTable && (
                 <div className="m-3 ">

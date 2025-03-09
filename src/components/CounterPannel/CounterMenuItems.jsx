@@ -271,7 +271,7 @@ function CounterMenuItems() {
                 toast.error(error.response.data.message)
             }
         }
-      
+
     }
 
     const handleEditItem = async (e) => {
@@ -287,36 +287,36 @@ function CounterMenuItems() {
         const category_id = menuitems.categoryId;
         if (regexUsername.test(editedItemName) && /^\d+$/.test(editedPrice) && editerr1.addCategoryErr == "" && editerr2.addCategoryErr == "") {
 
-        try {
-            const res = await Service.put("/menuItem/updateItem", { itemName, itemId, price, category_id })
-            // console.log(res)
-            if (res.status == 201) {
-                toast.success(res.data.message)
-                const updatedCategories = await getCategories(counter_id);
-                setShowItemEdit(false);
-                // Find the updated category and set menu items
-                const updatedCategory = updatedCategories.find(item => item.categoryId === menuitems.categoryId);
-                if (updatedCategory) {
-                    setMenuItems(updatedCategory);
-                    setFilteredMenuItems(updatedCategory.menu); // Refresh table data
-                }
-                // console.log(menuitems.name);
-                // console.log(data);
-                // setFilteredMenuItems(data.menu)
-                handleCardClick(data)
-                data.map((item, index) => (
-                    item.categoryId === menuitems.categoryId ? setMenuItems(item) : ''
-                ))
+            try {
+                const res = await Service.put("/menuItem/updateItem", { itemName, itemId, price, category_id })
+                // console.log(res)
+                if (res.status == 201) {
+                    toast.success(res.data.message)
+                    const updatedCategories = await getCategories(counter_id);
+                    setShowItemEdit(false);
+                    // Find the updated category and set menu items
+                    const updatedCategory = updatedCategories.find(item => item.categoryId === menuitems.categoryId);
+                    if (updatedCategory) {
+                        setMenuItems(updatedCategory);
+                        setFilteredMenuItems(updatedCategory.menu); // Refresh table data
+                    }
+                    // console.log(menuitems.name);
+                    // console.log(data);
+                    // setFilteredMenuItems(data.menu)
+                    handleCardClick(data)
+                    data.map((item, index) => (
+                        item.categoryId === menuitems.categoryId ? setMenuItems(item) : ''
+                    ))
 
+                }
+                setShowItemEdit(false);
+            } catch (error) {
+                toast.error(error.response.data.message)
+                // alert(error.response.data.message);
+                // console.log(error);
             }
-            setShowItemEdit(false);
-        } catch (error) {
-            toast.error(error.response.data.message)
-            // alert(error.response.data.message);
-            // console.log(error);
+
         }
-        
-    }
     };
 
 
@@ -509,14 +509,14 @@ function CounterMenuItems() {
 
 
     const columns = [
-        { name: "ID", selector: (row,index) => index+1, sortable: true, width: "70px" },
+        { name: "ID", selector: (row, index) => index + 1, sortable: true, },
         { name: "Item Name", selector: (row) => row.name, sortable: true },
-        {
-            name: "Available", selector: (row) => <Badge bg={row.itemAvailability === 1 ? "success" : "danger"} className="p-2">
-                {row.itemAvailability === 1 ? "Yes" : "No"}
-            </Badge>, sortable: true
-        },
-        { name: "Price", selector: (row) => row.price, sortable: true, width: "120px" },
+        // {
+        //     name: "Available", selector: (row) => <Badge bg={row.itemAvailability === 1 ? "success" : "danger"} className="p-2">
+        //         {row.itemAvailability === 1 ? "Yes" : "No"}
+        //     </Badge>, sortable: true
+        // },
+        { name: "Price", selector: (row) => row.price, sortable: true, },
         {
             name: "Actions",
             selector: (row) => (
@@ -574,6 +574,66 @@ function CounterMenuItems() {
 
     // }
 
+    const cardStyle = {
+        position: "relative",
+        width: "300px",
+        transition: "transform 0.3s ease, box-shadow 0.3s ease",
+        cursor: "pointer",
+        border: "2px solid black",
+        backgroundColor: "aliceblue",
+        overflow: "hidden",
+        textAlign: "center",
+        margin: "20px auto",
+        borderRadius: "8px",
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)"
+    };
+
+    const verticalRibbonContainer = {
+        position: "absolute",
+        top: 0,
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        zIndex: 0
+    };
+
+    const ribbonStyle = (color) => ({
+        width: "20px",
+        height: "100%",
+        margin: "0 3px",
+        background: color,
+        clipPath: "polygon(50% 0%, 100% 0, 100% 85%, 50% 100%, 0 85%, 0 0)"
+    });
+
+    const horizontalRibbon = {
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        background: "white",
+        padding: "10px 25px",
+        fontWeight: "bold",
+        fontFamily: "Arial, sans-serif",
+        fontSize: "18px",
+        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+        borderRadius: "4px",
+        zIndex: 1,
+        color: "darkblue",
+        border: "2px solid darkblue"
+    };
+
+    const cardFooter = {
+        backgroundColor: "darkblue",
+        color: "white",
+        borderTopLeftRadius: "0px",
+        borderTopRightRadius: "0px",
+        padding: "10px",
+        textAlign: "center",
+        zIndex: 2,
+        position: "relative"
+    };
+
     return (
         <div>
             <>
@@ -592,23 +652,45 @@ function CounterMenuItems() {
                             }} onClick={handleClick}>ADD</Button>
                         </div>
                         {categoryList.map((item, index) => (
-                            <div className='col-12 col-md-6 col-lg-4 ' >
-                                <div className='card text-center w-100 h-100' style={{ cursor: 'pointer', border: "2px solid black", backgroundColor: "aliceblue" }} key={index}>
-                                    <div class="dropdown text-end">
-                                        <span class="dropdown-toggle" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div className='col-12 col-md-6 col-lg-6 col-xl-4  text-center align-items-center justify-content-center' >
+                                <div className='card text-center ms-3' style={{ cursor: 'pointer', border: "2px solid black", backgroundColor: "aliceblue", position: "relative", overflow: "hidden", }} key={index}>
+
+                                    {/* Dropdown Menu */}
+                                    <div className="dropdown text-end " style={{ position: "absolute", right: "10px", top: "10px", zIndex: 2 }}>
+                                        <span className="dropdown-toggle" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
                                             <MoreVertIcon />
                                         </span>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                            <li><button class="dropdown-item" type="button" onClick={() => {
-                                                setCategory(item)
-                                                setShowCategoryEdit(!showCategoryEdit)
-                                                setEditCategoryName(item.name);
-                                            }}>Edit</button></li>
-                                            <li><button class="dropdown-item" type="button" onClick={() => deleteCategory(item.categoryId)}>Delete</button></li>
+                                        <ul className="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                            <li>
+                                                <button className="dropdown-item" type="button" onClick={() => {
+                                                    setCategory(item);
+                                                    setShowCategoryEdit(!showCategoryEdit);
+                                                    setEditCategoryName(item.name);
+                                                }}>Edit</button>
+                                            </li>
+                                            <li>
+                                                <button className="dropdown-item" type="button" onClick={() => deleteCategory(item.categoryId)}>Delete</button>
+                                            </li>
                                         </ul>
                                     </div>
-                                    <div className='card-body p-5 ' onClick={() => handleCardClick(item)}>
-                                        <h5 className='fw-bold fs-3 '>{item.name}</h5>
+
+                                    {/* Vertical Ribbon Effect */}
+                                    <div style={{ position: "absolute", top: 0, width: "100%", height: "100%", display: "flex", justifyContent: "center", zIndex: 0 }}>
+                                        <div style={{ width: "20px", height: "100%", margin: "0 3px", background: "#3B5998" }}></div> {/* Dark Blue */}
+                                        <div style={{ width: "20px", height: "100%", margin: "0 3px", background: "#6A89CC" }}></div> {/* Light Blue */}
+                                        <div style={{ width: "20px", height: "100%", margin: "0 3px", background: "#D9E4FC" }}></div> {/* Very Light Blue */}
+                                    </div>
+
+                                    {/* Horizontal Ribbon */}
+                                    <div style={horizontalRibbon}>Food</div>
+
+                                    {/* Card Body */}
+                                    <div className='card-body p-2 mb-5' onClick={() => handleCardClick(item)}></div>
+
+
+
+                                    <div style={cardFooter} className='mt-5' onClick={() => handleCardClick(item)}>
+                                        <h5 style={{ fontWeight: "bold", fontSize: "20px" }}>{item.name.toUpperCase()}</h5>
                                     </div>
                                 </div>
                             </div>
@@ -739,36 +821,48 @@ function CounterMenuItems() {
                                                     Edit Item
                                                 </DialogTitle>
                                                 <form onSubmit={handleEditItem}>
-                                                <DialogContent className='px-5'>
-                                                    <TextField
-                                                        fullWidth
-                                                        label="Item Name"
-                                                        name="editedItemName"
-                                                        value={editedItemName}
-                                                        onChange={editaddCategoryonChangeHandler1}
-                                                        error={editerr1.addCategoryErr}
-                                                        helperText={editerr1.addCategoryErr}
-                                                        margin="normal"
-                                                        required
-                                                    />
-                                                    <TextField
-                                                        fullWidth
-                                                        label="Price"
-                                                        name="editedPrice"
-                                                        value={editedPrice}
-                                                        onChange={editaddCategoryonChangeHandler2}
-                                                        margin="normal"
-                                                        error={editerr2.addCategoryErr}
-                                                        helperText={editerr2.addCategoryErr}
-                                                        required
-                                                    />
-                                                </DialogContent>
-                                                <DialogActions>
-                                                    <Button autoFocus onClick={() => {setShowItemEdit(!showItemEdit),setEditedItemName(''),setEditedPrice(''),editerr2.addCategoryErr = "",editerr1.addCategoryErr = ""}}>
-                                                        Cancel
-                                                    </Button>
-                                                    <Button type='submit'>Submit</Button>
-                                                </DialogActions>
+                                                    <DialogContent className='px-5'>
+                                                        <TextField
+                                                            fullWidth
+                                                            label="Item Name"
+                                                            name="editedItemName"
+                                                            value={editedItemName}
+                                                            onChange={editaddCategoryonChangeHandler1}
+                                                            onKeyPress={(e) => {
+                                                                const isValidInput = /^[a-zA-Z\s]*$/; // Allows letters and spaces
+                                                                if (!isValidInput.test(e.key)) {
+                                                                    e.preventDefault();
+                                                                }
+                                                            }}
+                                                            error={editerr1.addCategoryErr}
+                                                            helperText={editerr1.addCategoryErr}
+                                                            margin="normal"
+                                                            required
+                                                        />
+                                                        <TextField
+                                                            fullWidth
+                                                            label="Price"
+                                                            name="editedPrice"
+                                                            value={editedPrice}
+                                                            onChange={editaddCategoryonChangeHandler2}
+                                                            margin="normal"
+                                                            onKeyPress={(e) => {
+                                                                const isValidInput = /[0-9]/;
+                                                                if (!isValidInput.test(e.key)) {
+                                                                    e.preventDefault();
+                                                                }
+                                                            }}
+                                                            error={editerr2.addCategoryErr}
+                                                            helperText={editerr2.addCategoryErr}
+                                                            required
+                                                        />
+                                                    </DialogContent>
+                                                    <DialogActions>
+                                                        <Button autoFocus onClick={() => { setShowItemEdit(!showItemEdit), setEditedItemName(''), setEditedPrice(''), editerr2.addCategoryErr = "", editerr1.addCategoryErr = "" }}>
+                                                            Cancel
+                                                        </Button>
+                                                        <Button type='submit'>Submit</Button>
+                                                    </DialogActions>
                                                 </form>
                                             </Dialog>
                                         </React.Fragment>
@@ -827,7 +921,7 @@ function CounterMenuItems() {
                                                         />
                                                     </DialogContent>
                                                     <DialogActions>
-                                                        <Button autoFocus onClick={() => { setShowAddItem(!showAddItem), seItemName(''), setPrice(''), err1.addCategoryErr = "",err2.addCategoryErr = "" }}>
+                                                        <Button autoFocus onClick={() => { setShowAddItem(!showAddItem), seItemName(''), setPrice(''), err1.addCategoryErr = "", err2.addCategoryErr = "" }}>
                                                             Cancel
                                                         </Button>
                                                         <Button type='submit'>Submit</Button>

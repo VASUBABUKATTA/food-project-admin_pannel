@@ -139,39 +139,7 @@ function DemoPageContent({ pathname }) {
     }
   }, [pathname]); 
 
-//   if (pathname == '/logout') {
 
-// confirmAlert({
-//   title:"Conform Logout",
-//   message:'Are You Sure You want to Logout From The Application ?',
-//   buttons:[
-//     {
-//       label:"Yes",
-//       onClick:()=>{
-//         toast.success("Logout Successfull!", {
-//           position: "top-right",
-//           autoClose: 5000, // Closes after 3 seconds
-//           hideProgressBar: false,
-//           closeOnClick: true,
-//           pauseOnHover: true,
-//           draggable: true,
-//           progress: undefined,
-//           theme: "light",
-//         });
-//         navigate('/')
-//       }
-//     },
-//     {
-//       label:"No",
-//       onClick:()=>{
-
-//       }
-//     }
-//   ]
-// })
-
-   
-//   }
 
   const fetchData = async () => {
     try {
@@ -234,6 +202,7 @@ if(pathname == "/")
     setCounterName(counters1[counterName1]?.COUNTERNAME);
       setState(true)
     }
+   console.log(pathname);
    
   }, [pathname]);
 
@@ -295,6 +264,10 @@ function DashboardLayoutBranding(props) {
     return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
   };
 
+  const handleLogout =()=>{
+    console.log('logout')
+  }
+
   // Ensure children is always an array to prevent .map() errors
   const NAVIGATION1 = [
     { kind: 'header', title: <Typography sx={{ color: '#ffffff' }}>Menu</Typography> },
@@ -325,7 +298,7 @@ function DashboardLayoutBranding(props) {
     { segment: 'nestead/sidenav/counters/all/Profiles', title: 'Counter Profiles', icon: <StoreTwoTone sx={{ color: '#ffffff !important' }} /> },
     { segment: 'nestead/sidenav/counters/Availability', title: 'Counters Availability', icon: <RestaurantMenu sx={{ color: "#ffffff !important" }} /> },
     { segment: 'nestead/sidenav/settingsPannel', title: 'Settings', icon: <Settings sx={{ color: '#ffffff !important' }} /> },
-    { segment: 'logout', title: 'Logout', icon: <Box><Logout sx={{ color: '#ffffff !important' }} className='vasu' /> </Box> }
+    { segment: 'logout', title: 'Logout', icon: <Box onclick={handleLogout}><Logout sx={{ color: '#ffffff !important' }}  /> </Box> }
   ];
 
 
@@ -395,9 +368,9 @@ const demoTheme = createTheme({
     <AppProvider
       navigation={NAVIGATION1}
       branding={{
-        logo: <Link to='/'> <img src={foodLogo} style={{ borderRadius: '50%', textDecoration: 'none' }} alt="MUI logo" /></Link>,
-        title: <Link to='/' style={{ textDecoration: 'none' }}> <Typography variant='h5' sx={{ color: '#ffffff', fontWeight: 'bold' }}>The Place Drive In</Typography></Link>,
-        homeUrl: '/toolpad/core/introduction',
+        logo: <Link to='/nestead/sidenav' > <img  src={foodLogo} style={{ borderRadius: '50%', textDecoration: 'none' }}  alt="MUI logo" /></Link>,
+        title: <Link to='/nestead/sidenav' style={{ textDecoration: 'none' }}> <Typography variant='h5' sx={{ color: '#ffffff', fontWeight: 'bold' }}>The Place Drive In</Typography></Link>,
+        // homeUrl: '/toolpad/core/introduction',
       }}
       router={router}
       theme={demoTheme}

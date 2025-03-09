@@ -1,6 +1,9 @@
 import axios from 'axios';
+// import io from "socket.io-client";
+// export const socket = io("http://localhost:9090");
 
-const API_BASE_URL = "http://localhost:9090";
+// const API_BASE_URL = "http://192.168.1.6:9090";
+const API_BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const CategoryService =
 {

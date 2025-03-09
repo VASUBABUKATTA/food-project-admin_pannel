@@ -1,5 +1,6 @@
 import axios from "axios";
-const baseUrl ='http://localhost:9090/counter';
+// const baseUrl ='http://192.168.1.6:9090/counter';
+const baseUrl = import.meta.env.VITE_FOR_REGISTRATION_COUNTERS;
 
 class CounterRegistrationApis{
 // to fetch the data for All Counters:
